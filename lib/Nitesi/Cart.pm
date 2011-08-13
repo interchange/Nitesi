@@ -23,6 +23,7 @@ sub new {
     my ($class, $self, %args);
 
     $class = shift;
+    %args = @_;
 
     $self = {error => '', items => [], modifiers => []};
 
