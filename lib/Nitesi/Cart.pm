@@ -54,6 +54,23 @@ sub items {
     wantarray ? @{$self->{items}} : scalar @{$self->{items}};
 }
 
+=head2 total
+
+Returns total of the cart.
+
+=cut
+
+sub total {
+    my ($self) = shift;
+    my $total = 0;
+
+    for my $item (@{$self->{items}}) {
+	$total += $item->{price} * $item->{quantity};
+    }
+
+    return $total;
+}
+ 
 =head2 add $item
 
 Add item to the cart. Returns item in case of success.
