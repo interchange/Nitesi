@@ -130,7 +130,7 @@ sub add {
     }
 
     unless (exists $item{price} && defined $item{price}
-	    && $item{price} =~ /^(\d+)$/ && $item{price} > 0) {
+	    && $item{price} =~ /^(\d+)(\.\d+)?$/ && $item{price} > 0) {
 	$self->{error} = "Item $item{sku} added with invalid price.";
 	return;
     }
