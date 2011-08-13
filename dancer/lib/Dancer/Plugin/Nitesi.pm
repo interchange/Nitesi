@@ -30,6 +30,8 @@ our $VERSION = '0.0001';
 
 =cut
 
+Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add/);
+
 my %carts;
 
 register cart => sub {
@@ -43,7 +45,8 @@ register cart => sub {
     }
 
     unless (exists $carts{$name}) {
-	$carts{$name} = Nitesi::Cart->new();
+	$carts{$name} = Nitesi::Cart->new(name => $name,
+					  run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
     }
 
     return $carts{$name};

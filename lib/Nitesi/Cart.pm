@@ -38,6 +38,10 @@ sub new {
 	$self->{modifiers} = $args{modifiers};
     }
 
+    if ($args{run_hooks}) {
+	$self->{run_hooks} = $args{run_hooks};
+    }
+
     bless $self, $class;
 
     return $self;
@@ -104,10 +108,19 @@ Item price is required and a positive number.
 
 sub add {
     my ($self, $item_ref) = @_;
-    my (%item);
+    my (%item, $ret);
 
     # copy item
     %item = %{$item_ref};
+
+    # run hooks before adding item to cart
+    $self->_run_hook('before_cart_add', $self, \%item);
+
+    if (exists $item{error}) {
+	# one of the hooks denied the item
+	$self->{error} = $item{error};
+	return;
+    }
 
     # validate item
     unless (exists $item{sku} && defined $item{sku} && $item{sku} =~ /\S/) {
@@ -135,10 +148,13 @@ sub add {
 	$self->{error} = "Item $item{sku} added with invalid price.";
 	return;
     }
-    my $ret = '';
+
     unless ($ret = $self->_combine(\%item)) {
 	push @{$self->{items}}, \%item;
     }
+
+    # run hooks after adding item to cart
+    $ret = $self->_run_hook('after_cart_add', $self, \%item);
 
     return \%item;
 }
@@ -198,6 +214,17 @@ sub _combine {
     }
 
     return;
+}
+
+sub _run_hook {
+    my ($self, $name, @args) = @_;
+    my $ret;
+
+    if ($self->{run_hooks}) {
+	$ret = $self->{run_hooks}->($name, @args);
+    }
+
+    return $ret;
 }
 
 1;

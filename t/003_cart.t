@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 18;
 
 use Nitesi::Cart;
 
@@ -75,3 +75,20 @@ ok(ref($ret) eq 'HASH', $cart->error);
 
 $ret = $cart->total;
 ok($ret == 10, "Total: $ret");
+
+# Hooks
+$cart = Nitesi::Cart->new(run_hooks => sub {
+    my ($hook, $cart, $item) = @_;
+
+    if ($hook eq 'before_cart_add' && $item->{price} > 3) {
+	$item->{error} = 'Test error';
+    }
+			  });
+
+$item = {sku => 'KLM', name => 'Foobar', price => 3.34, quantity => 1};
+$ret = $cart->add($item);
+
+$ret = $cart->items;
+ok($ret == 0, "Items: $ret");
+
+ok($cart->error eq 'Test error', "Cart error: " . $cart->error);
