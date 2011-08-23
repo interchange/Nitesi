@@ -199,6 +199,20 @@ sub error {
     return $self->{error};
 }
 
+=head2 seed $item_ref
+
+Seeds items within the cart from $item_ref.
+
+=cut
+
+sub seed {
+    my ($self, $item_ref) = @_;
+
+    @{$self->{items}} = @{$item_ref};
+
+    return $self->{items};
+}
+
 sub _combine {
     my ($self, $item) = @_;
 
