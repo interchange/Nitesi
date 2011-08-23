@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 20;
 
 use Nitesi::Cart;
 
@@ -92,3 +92,16 @@ $ret = $cart->items;
 ok($ret == 0, "Items: $ret");
 
 ok($cart->error eq 'Test error', "Cart error: " . $cart->error);
+
+# Seed
+$cart = Nitesi::Cart->new();
+$cart->seed([{sku => 'ABC', name => 'ABC', price => 2, quantity => 1},
+	     {sku => 'ABCD', name => 'ABCD', price => 3, quantity => 2},
+	    ]);
+
+$ret = $cart->items;
+ok($ret == 2, "Items: $ret");
+
+$ret = $cart->total;
+ok($ret == 8, "Total: $ret");
+
