@@ -40,7 +40,7 @@ $ret = $cart->add($item);
 ok(ref($ret) eq 'HASH', $cart->error);
 
 $ret = $cart->items();
-ok($ret == 1, "Items: $ret");
+ok(@$ret == 1, "Items: $ret");
 
 # Combine items
 $item = {sku => 'ABC', name => 'Foobar', price => 5};
@@ -48,14 +48,14 @@ $ret = $cart->add($item);
 ok(ref($ret) eq 'HASH', $cart->error);
 
 $ret = $cart->items;
-ok($ret == 1, "Items: $ret");
+ok(@$ret == 1, "Items: $ret");
 
 $item = {sku => 'DEF', name => 'Foobar', price => 5};
 $ret = $cart->add($item);
 ok(ref($ret) eq 'HASH', $cart->error);
 
 $ret = $cart->items;
-ok($ret == 2, "Items: $ret");
+ok(@$ret == 2, "Items: $ret");
 
 # Calculating total
 $cart->clear;
@@ -89,7 +89,7 @@ $item = {sku => 'KLM', name => 'Foobar', price => 3.34, quantity => 1};
 $ret = $cart->add($item);
 
 $ret = $cart->items;
-ok($ret == 0, "Items: $ret");
+ok(@$ret == 0, "Items: $ret");
 
 ok($cart->error eq 'Test error', "Cart error: " . $cart->error);
 
@@ -100,7 +100,7 @@ $cart->seed([{sku => 'ABC', name => 'ABC', price => 2, quantity => 1},
 	    ]);
 
 $ret = $cart->items;
-ok($ret == 2, "Items: $ret");
+ok(@$ret == 2, "Items: $ret");
 
 $ret = $cart->total;
 ok($ret == 8, "Total: $ret");
