@@ -208,7 +208,7 @@ Seeds items within the cart from $item_ref.
 sub seed {
     my ($self, $item_ref) = @_;
 
-    @{$self->{items}} = @{$item_ref};
+    @{$self->{items}} = @{$item_ref || []};
 
     return $self->{items};
 }
