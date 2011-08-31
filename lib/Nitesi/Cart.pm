@@ -56,7 +56,7 @@ Returns items in the cart.
 sub items {
     my ($self) = shift;
 
-    wantarray ? @{$self->{items}} : scalar @{$self->{items}};
+    return $self->{items};
 }
 
 =head2 total
