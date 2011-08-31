@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Nitesi::Cart;
+use Dancer ':syntax';
 use Dancer::Plugin;
 
 =head1 NAME
@@ -32,26 +33,69 @@ our $VERSION = '0.0001';
 
 Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add/);
 
+my $settings = undef;
 my %carts;
 
-register cart => sub {
-    my $name;
+before sub {
+    # find out which backend we are using
+    my ($backend, $backend_class, $backend_obj);
 
-    if (@_) {
-	$name = shift;
+    _load_settings() unless $settings;
+
+    if (exists $settings->{Cart}->{Backend}) {
+	$backend = $settings->{Cart}->{Backend};
     }
     else {
-	$name = '';
+	$backend = 'Session';
     }
 
-    unless (exists $carts{$name}) {
-	$carts{$name} = Nitesi::Cart->new(name => $name,
-					  run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
+    # load backend class
+    if ($backend =~ /::/) {
+	$backend_class = $backend;
+    }
+    else {
+	$backend_class = __PACKAGE__ . "::Cart::$backend";
     }
 
-    return $carts{$name};
+    eval "require $backend_class";
+
+    if ($@) {
+	die "Failed to load $backend_class: $@\n";
+    }
+
+    # instantiate backend object
+    eval {
+	$backend_obj = $backend_class->new(name => '',
+					   run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
+    };
+
+    if ($@) {
+	die "Failed to instantiate $backend_class: $@\n";
+    }
+
+    $backend_obj->load();
+
+    var nitesi_cart_backend => $backend_obj;
+};
+
+after sub {
+    my $backend_obj;
+
+    $backend_obj = vars->{'nitesi_cart_backend'};
+
+    $backend_obj->save();
+
+    var nitesi_cart_backend => undef;
+};
+
+register cart => sub {
+    return vars->{'nitesi_cart_backend'};
 };
 
 register_plugin;
+
+sub _load_settings {
+    $settings = plugin_setting;
+}
 
 1;
