@@ -44,8 +44,21 @@ sub new {
 
     bless $self, $class;
 
+    $self->init(%args);
+
     return $self;
 }
+
+=head2 init
+
+Initializer which receives the constructor arguments, but does nothing.
+May be overridden in a subclass.
+
+=cut
+
+sub init {
+    return 1;
+};
 
 =head2 items
 
