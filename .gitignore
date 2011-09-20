@@ -1,6 +1,8 @@
 environments
 Makefile
+Makefile.old
 blib
+html
 logs
 pm_to_blib
 run
