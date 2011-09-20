@@ -1,3 +1,4 @@
+Changes
 MANIFEST
 MANIFEST.SKIP
 lib/Nitesi.pm
@@ -8,6 +9,7 @@ lib/Nitesi/Class.pm
 lib/Nitesi/Object.pm
 lib/Nitesi/Object/Singleton.pm
 Makefile.PL
+README
 t/001_base.t
 t/003_cart.t
 t/manifest.t
