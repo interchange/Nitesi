@@ -9,7 +9,7 @@ Dancer::Plugin::Nitesi::Cart::Session - Session cart backend for Nitesi
 
 =cut
 
-use Dancer ':syntax';
+use Dancer qw/session/;
 
 use base 'Nitesi::Cart';
 
