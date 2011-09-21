@@ -14,7 +14,6 @@ Makefile$
 ^.*\.swp$
 ^html
 ^bin
-^dancer
 ^public
 ^run
 ^views
