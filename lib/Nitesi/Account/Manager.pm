@@ -79,7 +79,7 @@ sub init_from_session {
     my $self = shift;
 
     $self->{account} = $self->{session_sub}->() 
-	|| {username => '', permissions => ['anonymous']};
+	|| {uid => 0, username => '', permissions => ['anonymous']};
 
     $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
 
@@ -116,6 +116,19 @@ sub logout {
     my ($self, %args) = @_;
 
     $self->{session_sub}->('destroy');
+}
+
+=head2 uid
+
+Retrieve user identifier, returns 0 if current user
+isn't authenticated.
+
+=cut
+
+sub uid {
+    my $self = shift;
+
+    return $self->{account}->{uid};
 }
 
 =head2 username
