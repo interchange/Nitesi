@@ -50,7 +50,7 @@ sub init {
 	    # just one provider
 	    @list = ($ret);
 	}
-	else {
+	elsif (ref($ret) eq 'ARRAY') {
 	    @list = @$ret;
 	}
 
