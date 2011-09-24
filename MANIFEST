@@ -3,7 +3,6 @@ MANIFEST
 MANIFEST.SKIP
 lib/Nitesi.pm
 lib/Nitesi/Account/Manager.pm
-lib/Nitesi/Account/Provider/DBI.pm
 lib/Nitesi/Cart.pm
 lib/Nitesi/Class.pm
 lib/Nitesi/Object.pm
