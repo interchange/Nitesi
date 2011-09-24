@@ -172,6 +172,49 @@ sub add {
     return \%item;
 }
 
+=head2 remove $sku
+
+Remove item from the cart. Takes SKU of item to identify the item.
+
+=cut
+
+sub remove {
+    my ($self, $arg) = @_;
+    my ($pos, $found, $item);
+
+    for $item (@{$self->{items}}) {
+	if ($item->{sku} eq $arg) {
+	    $found = 1;
+	    last;
+	}
+	$pos++;
+    }
+
+    if ($found) {
+	# run hooks before adding item to cart
+	$item = $self->{items}->[$pos];
+
+	$self->_run_hook('before_cart_remove', $self, $item);
+
+	if (exists $item->{error}) {
+	    # one of the hooks denied removing the item
+	    $self->{error} = $item->{error};
+	    return;
+	}
+
+	# removing item from our array
+	splice(@{$self->{items}}, $pos, 1);
+
+	$self->_run_hook('after_cart_remove', $self, $item);
+	return 1;
+    }
+
+    # item missing
+    $self->{error} = "Missing item $arg.";
+
+    return;
+}
+
 =head2 clear
 
 Removes all items from the cart.
