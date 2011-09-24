@@ -1,5 +1,20 @@
 Revision history for Nitesi
 
+0.0002 Sat Sep 24 19:34:11 2011 CEST
+
+    [API CHANGES]
+
+    * Move Nitesi::Account::Provider::DBI to Nitesi::DBI distribution.
+
+    [ENHANCEMENTS]
+
+    * Add remove method to cart class.
+    * Add uid method to account manager class.
+
+    [BUG FIXES]
+
+    * Let account manager handle missing providers gracefully.
+
 0.0001 Tue Sep 20 16:38:28 2011 CEST
  
     * Initial release
