@@ -227,6 +227,23 @@ sub clear {
     $self->{items} = [];
 }
 
+=head2 id
+
+Get or set id of the cart. This can be used for subclasses, 
+e.g. primary key value for carts in the database.
+
+=cut
+
+sub id {
+    my $self = shift;
+
+    if (@_ > 0) {
+	$self->{id} = $_[0];
+    }
+
+    return $self->{id};
+}
+
 =head2 name
 
 Get or set the name of the cart.
