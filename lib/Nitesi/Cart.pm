@@ -182,6 +182,8 @@ sub remove {
     my ($self, $arg) = @_;
     my ($pos, $found, $item);
 
+    $pos = 0;
+
     for $item (@{$self->{items}}) {
 	if ($item->{sku} eq $arg) {
 	    $found = 1;
