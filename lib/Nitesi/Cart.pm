@@ -9,7 +9,7 @@ use constant CART_DEFAULT => 'main';
 
 =head1 NAME 
 
-Nitesi::Cart
+Nitesi::Cart - Cart class for Nitesi Shop Machine
 
 =head1 VERSION
 
