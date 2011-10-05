@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 22;
+use Test::More tests => 24;
 
 use Nitesi::Cart;
 
@@ -57,12 +57,12 @@ ok(ref($ret) eq 'HASH', $cart->error);
 $ret = $cart->items;
 ok(@$ret == 2, "Items: $ret");
 
-# Cart removal  tests
+# Cart removal
 $cart = Nitesi::Cart->new(run_hooks => sub {
     my ($hook, $cart, $item) = @_;
 
     if ($hook eq 'before_cart_remove' && $item->{sku} eq '123') {
-    $item->{error} = 'Test error';
+    $item->{error} = 'Item not removed due to hook.';
     }
               });
 
@@ -73,10 +73,16 @@ $item = {sku => '123', name => 'Foobar', price => 5};
 $ret = $cart->add($item);
 
 $ret = $cart->remove('123');
-ok($cart->error eq 'Test error', "Cart error: " . $cart->error);
+ok($cart->error eq 'Item not removed due to hook.', "Cart Error: " . $cart->error);
+
+$ret = $cart->items;
+ok(@$ret == 2, "Items: $ret");
 
 $ret = $cart->remove('DEF');
 ok(defined($ret), "Item DEF removed from cart.");
+
+$ret = $cart->items;
+ok(@$ret == 1, "Items: $ret");
 
 # 
 # Calculating total
