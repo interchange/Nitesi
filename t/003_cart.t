@@ -5,8 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 21;
-use Data::Dumper;
+use Test::More tests => 22;
 
 use Nitesi::Cart;
 
@@ -68,6 +67,9 @@ $cart = Nitesi::Cart->new(run_hooks => sub {
               });
 
 $item = {sku => 'DEF', name => 'Foobar', price => 5};
+$ret = $cart->add($item);
+
+$item = {sku => '123', name => 'Foobar', price => 5};
 $ret = $cart->add($item);
 
 $ret = $cart->remove('123');
