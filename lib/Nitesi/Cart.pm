@@ -126,14 +126,8 @@ sub add {
     # copy item
     %item = %{$item_ref};
 
-    # run hooks before adding item to cart
-    $self->_run_hook('before_cart_add', $self, \%item);
-
-    if (exists $item{error}) {
-	# one of the hooks denied the item
-	$self->{error} = $item{error};
-	return;
-    }
+    # run hooks before validating item
+    $self->_run_hook('before_cart_add_validate', $self, \%item);
 
     # validate item
     unless (exists $item{sku} && defined $item{sku} && $item{sku} =~ /\S/) {
@@ -161,6 +155,15 @@ sub add {
 	$self->{error} = "Item $item{sku} added with invalid price.";
 	return;
     }
+  
+    # run hooks before adding item to cart
+    $self->_run_hook('before_cart_add', $self, \%item);
+
+    if (exists $item{error}) {
+	# one of the hooks denied the item
+	$self->{error} = $item{error};
+	return;
+    }
 
     unless ($ret = $self->_combine(\%item)) {
 	push @{$self->{items}}, \%item;
@@ -183,6 +186,9 @@ sub remove {
     my ($pos, $found, $item);
 
     $pos = 0;
+  
+    # run hooks before locating item
+    $self->_run_hook('before_cart_remove_validate', $self, $arg);
 
     for $item (@{$self->{items}}) {
 	if ($item->{sku} eq $arg) {
