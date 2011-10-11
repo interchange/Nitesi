@@ -88,13 +88,23 @@ sub init_from_session {
 
 =head2 login
 
-Perform login.
+Perform login. 
+
+Leading and trailing spaces will be removed from
+username and password in advance.
 
 =cut
 
 sub login {
     my ($self, %args) = @_;
     my ($success, $acct);
+
+    # remove leading/trailing spaces from username and password
+    $args{username} =~ s/^\s+//;
+    $args{username} =~ s/\s+$//;
+
+    $args{password} =~ s/^\s+//;
+    $args{password} =~ s/\s+$//;
 
     for my $p (@providers) {
 	if ($acct = $p->login(%args)) {
