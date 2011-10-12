@@ -6,6 +6,7 @@ use warnings;
 use base 'Nitesi::Object::Singleton';
 
 use Nitesi::Class;
+use Nitesi::Account::Password;
 use ACL::Lite; 
 
 =head1 NAME
@@ -26,6 +27,10 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
 
     $acct->logout();
 
+    if ($acct->exists('shopper@nitesi.biz')) {
+        $acct->password('nevairbe', 'shopper@nitesi.biz');
+    }
+    
 =cut
 
 my @providers;
@@ -42,6 +47,8 @@ sub init {
     my ($class, $instance, %args) = @_;
     my ($ret, @list, $init);
 
+    $instance->{password} = Nitesi::Account::Password->instance;
+
     if ($args{provider_sub}) {
 	# retrieve list of providers
 	$ret = $args{provider_sub}->();
@@ -56,9 +63,8 @@ sub init {
 
 	# instantiate provider objects
 	for $init (@list) {
-	    push @providers, Nitesi::Class->instantiate(@$init);
+	    push @providers, Nitesi::Class->instantiate(@$init, crypt => $instance->{password});
 	}
-
     }
 
     if ($args{session_sub}) {
@@ -170,6 +176,65 @@ sub status {
     elsif (@args == 1) {
 	return $self->{account}->{$args[0]};
     }
+}
+
+=head2 exists
+
+Check whether account exists.
+
+    if ($acct->exists('shopper@nitesi.biz')) {
+        print "Account exists\n";
+    }
+
+=cut
+
+sub exists {
+    my ($self, $username) = @_;
+
+    return unless defined $username && $username =~ /\S/;
+
+    for my $p (@providers) {
+	if ($p->exists($username)) {
+	    return $p;
+	}
+    }
+}
+
+=head2 password
+
+Changes password for current account:
+
+    $acct->password('nevairbe');
+
+Changes password for other account:
+
+    $acct->password('nevairbe', 'shopper@nitesi.biz');
+
+=cut
+
+sub password {
+    my $self = shift;
+    my ($provider, %args);
+
+    if (@_ == 1) {
+	# new password only
+	unless ($self->{account}->{username}) {
+	    die "Cannot change password for anonymous user";
+	}
+
+	$args{username} = $self->{account}->{username};
+	$args{password} = shift;
+    }
+    else {
+	%args = @_;
+
+	unless ($provider = $self->exists($args{username})) {
+	    die "Cannot change password for user $args{username}.";
+	}
+    }
+
+    $provider->password($self->{password}->password($args{password}),
+			$args{username});
 }
 
 =head2 acl
