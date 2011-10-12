@@ -25,7 +25,10 @@ sub new {
     $class = shift;
     %args = @_;
 
-    $self = {error => '', items => [], modifiers => []};
+    $self = {error => '', items => [], modifiers => [],
+	     costs => [], subtotal => 0, total => 0, 
+	     cache_subtotal => 1, cache_total => 1,
+    };
 
     if ($args{name}) {
 	$self->{name} = $args{name};
@@ -72,6 +75,30 @@ sub items {
     return $self->{items};
 }
 
+=head2 subtotal
+
+Returns subtotal of the cart.
+
+=cut
+
+sub subtotal {
+    my ($self) = shift;
+
+    if ($self->{cache_subtotal}) {
+	return $self->{subtotal};
+    }
+
+    $self->{subtotal} = 0;
+
+    for my $item (@{$self->{items}}) {
+	$self->{subtotal} += $item->{price} * $item->{quantity};
+    }
+
+    $self->{cache_subtotal} = 1;
+
+    return $self->{subtotal};
+}
+
 =head2 total
 
 Returns total of the cart.
@@ -80,13 +107,27 @@ Returns total of the cart.
 
 sub total {
     my ($self) = shift;
-    my $total = 0;
+    my ($subtotal);
 
-    for my $item (@{$self->{items}}) {
-	$total += $item->{price} * $item->{quantity};
+    if ($self->{cache_total}) {
+	return $self->{total};
     }
 
-    return $total;
+    $self->{total} = $subtotal = $self->subtotal();
+
+    # calculate costs
+    for my $calc (@{$self->{costs}}) {
+	if ($calc->{relative}) {
+	    $self->{total} = $subtotal * $calc->{amount};
+        }
+	else {
+	    $self->{total} += $calc->{amount};
+	}
+    }
+
+    $self->{cache_total} = 1;
+
+    return $self->{total};
 }
  
 =head2 add $item
@@ -165,6 +206,9 @@ sub add {
 	return;
     }
 
+    # clear cache flags
+    $self->{cache_subtotal} = $self->{cache_total} = 0;
+
     unless ($ret = $self->_combine(\%item)) {
 	push @{$self->{items}}, \%item;
     }
@@ -210,6 +254,9 @@ sub remove {
 	    return;
 	}
 
+	# clear cache flags
+	$self->{cache_subtotal} = $self->{cache_total} = 0;
+
 	# removing item from our array
 	splice(@{$self->{items}}, $pos, 1);
 
@@ -233,6 +280,52 @@ sub clear {
     my ($self) = @_;
 
     $self->{items} = [];
+
+    # reset subtotal/total
+    $self->{subtotal} = 0;
+    $self->{total} = 0;
+    $self->{cache_subtotal} = 1;
+    $self->{cache_total} = 1;
+
+    return;
+}
+
+=head2 apply_cost 
+
+Apply cost to cart.
+
+Absolute cost:
+
+    $cart->apply_cost(amount => 5, name => 'fee', label => 'Pickup Fee');
+
+Relative cost:
+
+    $cart->apply_cost(amount => 0.19, name => 'tax', label => Sales Tax,
+                      relative => 1);
+
+=cut
+
+sub apply_cost {
+    my ($self, %args) = @_;
+
+    push @{$self->{costs}}, \%args;
+
+    # clear cache for total
+    $self->{cache_total} = 0;
+}
+
+=head2 clear_cost
+
+Clear costs.
+
+=cut
+
+sub clear_cost {
+    my $self = shift;
+
+    $self->{costs} = [];
+
+    $self->{cache_total} = 0;
 }
 
 =head2 id
@@ -290,6 +383,9 @@ sub seed {
     my ($self, $item_ref) = @_;
 
     @{$self->{items}} = @{$item_ref || []};
+
+    # clear cache flags
+    $self->{cache_subtotal} = $self->{cache_total} = 0;
 
     return $self->{items};
 }
