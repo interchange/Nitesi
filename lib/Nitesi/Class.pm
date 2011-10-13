@@ -40,6 +40,22 @@ sub instantiate {
     return $object;
 }
 
+=head2 load
+
+Loads class.
+
+=cut
+
+sub load {
+    my ($self, $class) = @_;
+
+    eval "require $class";
+
+    if ($@) {
+	die "failed to load class $class: $@";
+    }
+}
+
 =head1 AUTHOR
 
 Stefan Hornburg (Racke), <racke@linuxia.de>
