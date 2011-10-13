@@ -116,6 +116,7 @@ sub login {
 	if ($acct = $p->login(%args)) {
 	    $self->{session_sub}->('init', $acct);
 	    $success = 1;
+	    last;
 	}
     }
 
