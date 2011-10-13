@@ -265,6 +265,20 @@ sub acl {
     }
 }
 
+=head2 value
+
+Retrieve account data.
+
+=cut
+
+sub value {
+    my ($self, $name) = @_;
+
+    if (exists $self->{account}->{$name}) {
+	return $self->{account}->{$name};
+    }
+}
+    
 =head1 AUTHOR
 
 Stefan Hornburg (Racke), <racke@linuxia.de>
