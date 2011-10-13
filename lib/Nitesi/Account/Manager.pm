@@ -85,7 +85,7 @@ sub init_from_session {
     my $self = shift;
 
     $self->{account} = $self->{session_sub}->() 
-	|| {uid => 0, username => '', permissions => ['anonymous']};
+	|| {uid => 0, username => '', roles => [], permissions => ['anonymous']};
 
     $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
 
@@ -158,6 +158,18 @@ sub username {
     my $self = shift;
 
     return $self->{account}->{username};
+}
+
+=head2 roles
+
+Retrieve roles of this user.
+
+=cut
+
+sub roles {
+    my $self = shift;
+
+    wantarray ? @{$self->{account}->{roles}} : $self->{account}->{roles};
 }
 
 =head2 status
