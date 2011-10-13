@@ -3,6 +3,7 @@ MANIFEST
 MANIFEST.SKIP
 lib/Nitesi.pm
 lib/Nitesi/Account/Manager.pm
+lib/Nitesi/Account/Password.pm
 lib/Nitesi/Cart.pm
 lib/Nitesi/Class.pm
 lib/Nitesi/Object.pm
@@ -12,6 +13,7 @@ README
 t/001_base.t
 t/003_cart.t
 t/004_cost.t
+t/101_password.t
 t/manifest.t
 t/pod.t
 t/pod-coverage.t
