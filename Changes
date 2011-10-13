@@ -1,5 +1,25 @@
 Revision history for Nitesi
 
+0.0010 Thu Oct 13 08:42:33 2011 EDT 
+
+    [ENHANCEMENTS]
+
+    * Add Account::Manager::Password class.
+    * Add exists, roles and values method to Nitesi::Account::Manager.
+    * Remove leading and trailing spaces from username and password 
+      before login.
+    * Add costs and id method to cart class.
+    * Add before_cart_add_validate and before_cart_remove_validate hooks.
+    * Add load method to Nitesi::Class.
+
+    [TESTS]
+
+    * Add tests for remove method of cart class.
+
+    [DOCUMENTATION]
+
+    * Add short description to Nitesi::Cart's POD.
+
 0.0002 Sat Sep 24 19:34:11 2011 CEST
 
     [API CHANGES]
