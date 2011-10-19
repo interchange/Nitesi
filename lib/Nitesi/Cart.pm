@@ -116,14 +116,7 @@ sub total {
     $self->{total} = $subtotal = $self->subtotal();
 
     # calculate costs
-    for my $calc (@{$self->{costs}}) {
-	if ($calc->{relative}) {
-	    $self->{total} = $subtotal * $calc->{amount};
-        }
-	else {
-	    $self->{total} += $calc->{amount};
-	}
-    }
+    $self->{total} = $self->_calculate($subtotal);
 
     $self->{cache_total} = 1;
 
@@ -328,6 +321,38 @@ sub clear_cost {
     $self->{cache_total} = 0;
 }
 
+=head2 cost
+
+Returns particular cost by position or by name.
+
+=cut
+
+sub cost {
+    my ($self, $loc) = @_;
+    my ($cost, $ret);
+
+    if (defined $loc) {
+	if ($loc =~ /^\d+/) {
+	    # cost by position
+	    $cost = $self->{costs}->[$loc];
+	}
+	elsif ($loc =~ /\S/) {
+	    # cost by name
+	    for my $c (@{$self->{costs}}) {
+		if ($c->{name} eq $loc) {
+		    $cost = $c;
+		}
+	    }
+	}
+    }
+
+    if (defined $cost) {
+	$ret = $self->_calculate($self->{subtotal}, $cost);
+    }
+
+    return $ret;
+}
+
 =head2 id
 
 Get or set id of the cart. This can be used for subclasses, 
@@ -405,6 +430,34 @@ sub _combine {
     }
 
     return;
+}
+
+sub _calculate {
+    my ($self, $subtotal, $costs) = @_;
+    my ($cost_ref, $total);
+
+    if (ref $costs eq 'HASH') {
+	$cost_ref = [$costs];
+    }
+    elsif (ref $costs eq 'ARRAY') {
+	$cost_ref = $costs;
+    }
+    else {
+	$cost_ref = $self->{costs};
+    }
+
+    $total = $subtotal;
+
+    for my $calc (@$cost_ref) {
+	if ($calc->{relative}) {
+	    $total += $subtotal * $calc->{amount};
+        }
+	else {
+	    $total += $calc->{amount};
+	}
+    }
+
+    return $total;
 }
 
 sub _run_hook {
