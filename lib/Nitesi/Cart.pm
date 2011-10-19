@@ -116,7 +116,7 @@ sub total {
     $self->{total} = $subtotal = $self->subtotal();
 
     # calculate costs
-    $self->{total} = $self->_calculate($subtotal);
+    $self->{total} += $self->_calculate($subtotal);
 
     $self->{cache_total} = 1;
 
@@ -293,8 +293,13 @@ Absolute cost:
 
 Relative cost:
 
-    $cart->apply_cost(amount => 0.19, name => 'tax', label => Sales Tax,
+    $cart->apply_cost(amount => 0.19, name => 'tax', label => 'Sales Tax',
                       relative => 1);
+
+Inclusive cost:
+
+   $cart->apply_cost(amount => 0.19, name => 'tax', label => 'Sales Tax',
+                      relative => 1, inclusive => 1);
 
 =cut
 
@@ -303,8 +308,10 @@ sub apply_cost {
 
     push @{$self->{costs}}, \%args;
 
-    # clear cache for total
-    $self->{cache_total} = 0;
+    unless ($args{inclusive}) {
+	# clear cache for total
+	$self->{cache_total} = 0;
+    }
 }
 
 =head2 clear_cost
@@ -347,7 +354,7 @@ sub cost {
     }
 
     if (defined $cost) {
-	$ret = $self->_calculate($self->{subtotal}, $cost);
+	$ret = $self->_calculate($self->{subtotal}, $cost, 1);
     }
 
     return $ret;
@@ -433,8 +440,8 @@ sub _combine {
 }
 
 sub _calculate {
-    my ($self, $subtotal, $costs) = @_;
-    my ($cost_ref, $total);
+    my ($self, $subtotal, $costs, $display) = @_;
+    my ($cost_ref, $sum);
 
     if (ref $costs eq 'HASH') {
 	$cost_ref = [$costs];
@@ -446,18 +453,22 @@ sub _calculate {
 	$cost_ref = $self->{costs};
     }
 
-    $total = $subtotal;
+    $sum = 0;
 
     for my $calc (@$cost_ref) {
+	if ($calc->{inclusive} && ! $display) {
+	    next;
+	}
+
 	if ($calc->{relative}) {
-	    $total += $subtotal * $calc->{amount};
+	    $sum += $subtotal * $calc->{amount};
         }
 	else {
-	    $total += $calc->{amount};
+	    $sum += $calc->{amount};
 	}
     }
 
-    return $total;
+    return $sum;
 }
 
 sub _run_hook {
