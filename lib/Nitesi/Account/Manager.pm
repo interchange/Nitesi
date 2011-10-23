@@ -286,7 +286,23 @@ Retrieve account data.
 =cut
 
 sub value {
-    my ($self, $name) = @_;
+    my ($self, $name, $value) = @_;
+
+    if (@_ == 3) {
+	# update value
+	my ($username, $provider);
+
+	$username = $self->{account}->{username};
+
+	unless ($provider = $self->exists($username)) {
+	    die "Cannot change value $name for user $username.";
+	}
+
+	$provider->value($username, $name, $value);
+	$self->{account} = $self->{session_sub}->('update', {$name => $value});
+
+	return $value;
+    }
 
     if (exists $self->{account}->{$name}) {
 	return $self->{account}->{$name};
