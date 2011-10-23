@@ -173,6 +173,18 @@ sub roles {
     wantarray ? @{$self->{account}->{roles}} : $self->{account}->{roles};
 }
 
+=head2 has_role
+
+Returns true if user is a member of the given role.
+
+=cut
+
+sub has_role {
+    my ($self, $role) = @_;
+
+    grep {$role eq $_} @{$self->{account}->{roles}};
+}
+
 =head2 status
 
 Saves or retrieves status information.
