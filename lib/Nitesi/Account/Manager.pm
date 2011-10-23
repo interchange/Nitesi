@@ -115,6 +115,7 @@ sub login {
     for my $p (@providers) {
 	if ($acct = $p->login(%args)) {
 	    $self->{session_sub}->('init', $acct);
+	    $self->{account} = $acct;
 	    $success = 1;
 	    last;
 	}
