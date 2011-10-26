@@ -1,5 +1,18 @@
 Revision history for Nitesi
 
+0.0020 Wed Oct 26 16:12:08 2011 CEST
+
+    [ENHANCEMENTS]
+
+    * Add inclusive costs to cart class.
+    * Add cost method to cart class.
+    * Add has_role method to Nitesi::Account::Manager.
+    * Extend value method of account manager with setting account values.
+
+    [BUG FIXES]
+
+    * Populate account data in Nitesi::Account::Manager immediately after login.
+
 0.0010 Thu Oct 13 08:42:33 2011 EDT 
 
     [ENHANCEMENTS]
