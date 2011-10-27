@@ -207,7 +207,7 @@ sub add {
     }
 
     # run hooks after adding item to cart
-    $ret = $self->_run_hook('after_cart_add', $self, \%item);
+    $self->_run_hook('after_cart_add', $self, \%item, $ret);
 
     return \%item;
 }
@@ -432,11 +432,13 @@ sub _combine {
 	    }					
 	    			
 	    $cartitem->{'quantity'} += $item->{'quantity'};
-	    return $item;
+	    $item->{'quantity'} = $cartitem->{'quantity'};
+
+	    return 1;
 	}
     }
 
-    return;
+    return 0;
 }
 
 sub _calculate {
