@@ -1,5 +1,11 @@
 Revision history for Nitesi
 
+0.0030 Sat Oct 29 12:43:03 2011 CEST
+
+     [BUG FIXES]
+
+     Pass update flag to after_cart_add hook.
+
 0.0020 Wed Oct 26 16:12:08 2011 CEST
 
     [ENHANCEMENTS]
