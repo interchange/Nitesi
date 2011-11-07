@@ -234,7 +234,8 @@ Changes password for current account:
 
 Changes password for other account:
 
-    $acct->password('nevairbe', 'shopper@nitesi.biz');
+    $acct->password(username => 'shopper@nitesi.biz',
+                    password => 'nevairbe');
 
 =cut
 
