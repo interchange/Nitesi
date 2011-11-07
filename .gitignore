@@ -1,6 +1,8 @@
 environments
 Makefile
 Makefile.old
+MYMETA.*
+*.bak
 blib
 html
 logs
