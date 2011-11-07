@@ -1,10 +1,17 @@
 Revision history for Nitesi
 
+0.0031 Mon Nov  7 09:00:07 2011 CET
+
+    [ENHANCEMENTS]
+
+    * Add before_cart_clear and after_cart_clear hooks.
+    * Add before_cart_rename and after_cart_rename hooks.
+
 0.0030 Sat Oct 29 12:43:03 2011 CEST
 
-     [BUG FIXES]
+    [BUG FIXES]
 
-     Pass update flag to after_cart_add hook.
+    * Pass update flag to after_cart_add hook.
 
 0.0020 Wed Oct 26 16:12:08 2011 CEST
 
