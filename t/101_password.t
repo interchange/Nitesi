@@ -7,6 +7,11 @@ use warnings;
 
 use Test::More tests => 4;
 
+# Restrict PATH environment variable to secure paths
+BEGIN {
+    $ENV{PATH} = '/bin:/usr/bin';
+};
+
 use Nitesi::Account::Password;
 
 my ($crypt, $hash, $ret);
