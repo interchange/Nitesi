@@ -1,5 +1,15 @@
 Revision history for Nitesi
 
+0.0032 Sun Nov 13 14:48:34 2011 CET
+
+    [BUG FIXES]
+
+    * Set PATH environment variable to fixed system directories in password test.
+
+    [DOCUMENTATION]
+
+    * Fix POD example for changing password of an arbitrary account.
+
 0.0031 Mon Nov  7 09:00:07 2011 CET
 
     [ENHANCEMENTS]

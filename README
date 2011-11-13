@@ -2,14 +2,20 @@ NAME
     Nitesi - Open Source Shop Machine
 
 VERSION
-    0.0031
+    0.0032
 
 DESCRIPTION
-    The Nitesi API is provided by the following classes:
+    Nitesi, the Open Source Shop Machine, is the Modern Perl ecosystem for
+    online business.
+
+    This module provides APIs for carts and account management:
 
     *   Nitesi::Cart
 
     *   Nitesi::Account::Manager
+
+    To build your own business website, please take a look at our Dancer
+    plugin: Dancer::Plugin::Nitesi.
 
 CAVEATS
     Please anticipate API changes in this early state of development.
