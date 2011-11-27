@@ -1,5 +1,11 @@
 Revision history for Nitesi
 
+0.0033 Sun Nov 27 11:26:19 2011 CET
+
+    [TESTS]
+
+    * Get rid of -T switch on password tests as a few systems still fail.
+
 0.0032 Sun Nov 13 14:48:34 2011 CET
 
     [BUG FIXES]
