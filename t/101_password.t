@@ -17,19 +17,19 @@ $hash = $crypt->password('nevairbe');
 
 # check whether password matches
 $ret = $crypt->check($hash, 'nevairbe');
-ok($ret);
+ok($ret, 'password match');
 
 # check whether password fails
 $ret = $crypt->check($hash, 'wrong');
-ok(! $ret);
+ok(! $ret, 'password mismatch');
 
 # repeat for md5
 $hash = $crypt->password('nevairbe', 'md5');
 
 # check whether password matches
 $ret = $crypt->check($hash, 'nevairbe');
-ok($ret);
+ok($ret, 'password match (md5)');
 
 # check whether password fails
 $ret = $crypt->check($hash, 'wrong');
-ok(! $ret);
+ok(! $ret, 'password mismatch (md5)');
