@@ -28,7 +28,7 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
     $acct->logout();
 
     if ($acct->exists('shopper@nitesi.biz')) {
-        $acct->password('nevairbe', 'shopper@nitesi.biz');
+        $acct->password(username => 'shopper@nitesi.biz', password => 'nevairbe');
     }
     
 =cut
