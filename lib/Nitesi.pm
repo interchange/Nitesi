@@ -6,11 +6,11 @@ Nitesi - Open Source Shop Machine
 
 =head1 VERSION
 
-0.0033
+0.0034
 
 =cut
 
-our $VERSION = '0.0033';
+our $VERSION = '0.0034';
 
 =head1 DESCRIPTION
 
