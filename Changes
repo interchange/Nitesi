@@ -1,5 +1,16 @@
 Revision history for Nitesi
 
+0.0034 Sat Jan  7 07:56:48 2012 EST
+
+    [BUG FIXES]
+
+    * Use check_password function instead of check method which has
+      been removed in Crypt::Password 0.23 (#73809).
+
+    [DOCUMENTATION]
+
+    * Fix password example in account manager's synopsis.
+
 0.0033 Sun Nov 27 11:26:19 2011 CET
 
     [TESTS]
