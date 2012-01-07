@@ -24,7 +24,7 @@ Checks password retrieved from user against the password hash.
 sub check {
     my ($self, $hash, $password) = @_;
 
-    Crypt::Password::password($hash)->check($password);
+    Crypt::Password::check_password($hash, $password);
 }
 
 =head2 password
