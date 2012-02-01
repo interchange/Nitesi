@@ -263,6 +263,49 @@ sub remove {
     return;
 }
 
+=head2 update
+
+Update items in the cart.
+
+Parameters are pairs of SKUs and quantities, e.g.
+
+    $cart->update(9780977920174 => 5,
+                  9780596004927 => 3);
+
+=cut
+
+sub update {
+    my ($self, @args) = @_;
+    my ($ref, $sku, $qty, $item, $new_item);
+
+    while (@args > 0) {
+	$sku = shift @args;
+	$qty = shift @args;
+
+	unless ($item = $self->_find($sku)) {
+	    die "Item for $sku not found in cart.\n";
+	}
+
+	# jump to next item if quantity stays the same
+	next if $qty == $item->{quantity};
+
+	# run hook before updating the cart
+	$new_item = {quantity => $qty};
+
+	$self->_run_hook('before_cart_update', $self, $item, $new_item);
+
+	if (exists $new_item->{error}) {
+	    # one of the hooks denied the item
+	    $self->{error} = $new_item->{error};
+	    return;
+	}
+
+	$self->_run_hook('after_cart_update', $self, $item, $new_item);
+
+	$item->{quantity} = $qty;
+    }
+}
+
 =head2 clear
 
 Removes all items from the cart.
@@ -464,6 +507,18 @@ sub seed {
     $self->{cache_subtotal} = $self->{cache_total} = 0;
 
     return $self->{items};
+}
+
+sub _find {
+    my ($self, $sku) = @_;
+
+    for my $cartitem (@{$self->{items}}) {
+	if ($sku eq $cartitem->{sku}) {
+	    return $cartitem;
+        }
+    }
+
+    return;
 }
 
 sub _combine {
