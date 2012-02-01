@@ -375,7 +375,7 @@ Apply cost to cart.
 
 Absolute cost:
 
-    $cart->apply_cost(amount => 5, name => 'fee', label => 'Pickup Fee');
+    $cart->apply_cost(amount => 5, name => 'shipping', label => 'Shipping');
 
 Relative cost:
 
