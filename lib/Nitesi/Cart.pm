@@ -289,6 +289,38 @@ sub clear {
     return;
 }
 
+=head2 quantity
+
+Returns the sum of the quantity of all items in the shopping cart,
+which is commonly used as number of items.
+
+    print 'Items in your cart: ', $cart->quantity, "\n";
+
+=cut
+
+sub quantity {
+    my $self = shift;
+    my $qty = 0;
+
+    for my $item (@{$self->{items}}) {
+	$qty += $item->{quantity};
+    }
+
+    return $qty;
+}
+
+=head2 count
+
+Returns the number of different items in the shopping cart.
+
+=cut
+
+sub count {
+    my $self = shift;
+
+    return scalar(@{$self->{items}});
+}
+
 =head2 apply_cost 
 
 Apply cost to cart.
