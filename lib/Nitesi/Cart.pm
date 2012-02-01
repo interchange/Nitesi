@@ -127,7 +127,7 @@ sub total {
 
 Add item to the cart. Returns item in case of success.
 
-The item is a hash reference which is subject to the following
+The item is a hash (reference) which is subject to the following
 conditions:
 
 =over 4
@@ -154,11 +154,16 @@ Item price is required and a positive number.
 =cut
 
 sub add {
-    my ($self, $item_ref) = @_;
+    my $self = shift;
     my (%item, $ret);
 
-    # copy item
-    %item = %{$item_ref};
+    if (ref($_[0])) {
+	# copy item
+	%item = %{$_[0]};
+    }
+    else {
+	%item = @_;
+    }
 
     # run hooks before validating item
     $self->_run_hook('before_cart_add_validate', $self, \%item);
