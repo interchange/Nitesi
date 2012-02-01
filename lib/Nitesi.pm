@@ -34,6 +34,11 @@ L<Nitesi::Account::Manager>
 To build your own business website, please take a look at
 our Dancer plugin: L<Dancer::Plugin::Nitesi>.
 
+=head1 CART
+
+Nitesi supports multiple carts, automatic collapsing of similar items
+and price caching.
+
 =head1 CAVEATS
 
 Please anticipate API changes in this early state of development.
