@@ -11,7 +11,33 @@ use constant CART_DEFAULT => 'main';
 
 Nitesi::Cart - Cart class for Nitesi Shop Machine
 
-=head1 VERSION
+=head1 DESCRIPTION
+
+Generic cart class for L<Nitesi>.
+
+=head2 CART ITEMS
+
+Each item in the cart has at least the following attributes:
+
+=over 4
+
+=item sku
+
+Unique item identifier.
+
+=item name
+
+Item name.
+
+=item quantity
+
+Item quantity.
+
+=item price
+
+Item price.
+
+=back
 
 =head1 CONSTRUCTOR
 
