@@ -2,7 +2,7 @@ NAME
     Nitesi - Open Source Shop Machine
 
 VERSION
-    0.0034
+    0.0040
 
 DESCRIPTION
     Nitesi, the Open Source Shop Machine, is the Modern Perl ecosystem for
@@ -16,6 +16,10 @@ DESCRIPTION
 
     To build your own business website, please take a look at our Dancer
     plugin: Dancer::Plugin::Nitesi.
+
+CART
+    Nitesi supports multiple carts, automatic collapsing of similar items
+    and price caching.
 
 CAVEATS
     Please anticipate API changes in this early state of development.
@@ -51,7 +55,7 @@ SUPPORT
 
 ACKNOWLEDGEMENTS
 LICENSE AND COPYRIGHT
-    Copyright 2011 Stefan Hornburg (Racke).
+    Copyright 2011-2012 Stefan Hornburg (Racke).
 
     This program is free software; you can redistribute it and/or modify it
     under the terms of either: the GNU General Public License as published

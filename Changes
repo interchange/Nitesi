@@ -1,5 +1,18 @@
 Revision history for Nitesi
 
+0.0040 Sat Feb  4 10:17:41 2012 CET
+
+    [ENHANCEMENTS]
+
+    * Allow passing of hash to Nitesi::Cart's add method.
+    * Add update method to Nitesi::Cart.
+    * Add quantity and count methods to Nitesi::Cart.
+
+    [DOCUMENTATION]
+
+    * Add section with cart features to Nitesi's POD.
+    * Use better example for adding absolute cost to cart.
+
 0.0034 Sat Jan  7 07:56:48 2012 EST
 
     [BUG FIXES]
