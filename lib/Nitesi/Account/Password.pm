@@ -3,7 +3,7 @@ package Nitesi::Account::Password;
 use strict;
 use warnings;
 
-use Crypt::Password ();
+use Crypt::Password 0.23 ();
 
 use base 'Nitesi::Object::Singleton';
 
