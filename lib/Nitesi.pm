@@ -17,15 +17,19 @@ our $VERSION = '0.0040';
 Nitesi, the Open Source Shop Machine, is the Modern Perl ecosystem
 for online business.
 
-This module provides APIs for carts and account management:
+This module provides the following APIs:
 
 =over 4
 
-=item *
+=item Carts
 
 L<Nitesi::Cart>
 
-=item *
+=item Products
+
+L<Nitesi::Product>
+
+=item Account Management
 
 L<Nitesi::Account::Manager>
 
