@@ -303,6 +303,12 @@ Parameters are pairs of SKUs and quantities, e.g.
     $cart->update(9780977920174 => 5,
                   9780596004927 => 3);
 
+Triggers before_cart_update and after_cart_update hooks.
+
+A quantity of zero is equivalent to removing this item,
+so in this case the remove hooks will be invoked instead 
+of the update hooks.
+
 =cut
 
 sub update {
@@ -315,6 +321,12 @@ sub update {
 
 	unless ($item = $self->_find($sku)) {
 	    die "Item for $sku not found in cart.\n";
+	}
+
+	if ($qty == 0) {
+	    # remove item instead
+            $self->remove($sku);
+	    next;
 	}
 
 	# jump to next item if quantity stays the same

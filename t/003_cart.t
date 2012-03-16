@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 32;
+use Test::More tests => 34;
 
 use Nitesi::Cart;
 
@@ -73,6 +73,14 @@ ok($ret == 2, "Count: $ret");
 
 $ret = $cart->quantity;
 ok($ret == 5, "Quantity: $ret");
+
+$cart->update(ABC => 0);
+
+$ret = $cart->count;
+ok($ret == 1, "Count: $ret");
+
+$ret = $cart->quantity;
+ok($ret == 4, "Quantity: $ret");
 
 # Cart removal
 $cart = Nitesi::Cart->new(run_hooks => sub {
