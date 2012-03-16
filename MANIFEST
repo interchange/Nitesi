@@ -8,6 +8,7 @@ lib/Nitesi/Cart.pm
 lib/Nitesi/Class.pm
 lib/Nitesi/Object.pm
 lib/Nitesi/Object/Singleton.pm
+lib/Nitesi/Product.pm
 Makefile.PL
 README
 t/001_base.t
