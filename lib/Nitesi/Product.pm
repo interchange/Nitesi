@@ -88,6 +88,12 @@ has inactive => (
     default => quote_sub q{return 0;},
 );
 
+sub api_info {
+    return {table => 'products',
+	    key => 'sku',
+    };
+};
+
 =head1 AUTHOR
 
 Stefan Hornburg (Racke), <racke@linuxia.de>
