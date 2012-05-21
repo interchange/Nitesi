@@ -30,7 +30,9 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
     if ($acct->exists('shopper@nitesi.biz')) {
         $acct->password(username => 'shopper@nitesi.biz', password => 'nevairbe');
     }
-    
+
+    $acct->create(email => 'shopper@nitesi.biz');
+
 =cut
 
 my @providers;
@@ -134,6 +136,44 @@ sub logout {
     my ($self, %args) = @_;
 
     $self->{session_sub}->('destroy');
+}
+
+=head2 create
+
+Create account.
+
+=cut
+
+sub create {
+    my ($self, %args) = @_;
+    my ($password, $uid);
+    
+    # remove leading/trailing spaces from arguments
+    for my $name (keys %args) {
+        $args{$name} =~ s/^\s+//;
+        $args{$name} =~ s/\s+$//;
+    }
+
+    unless (exists $args{username} && $args{username} =~ /\S/) {
+        $args{username} = lc($args{email});
+    }
+
+    # password is added after account creation
+    unless ($password = delete $args{password}) {
+        $password = $self->{password}->make_password;
+    }
+
+    for my $p (@providers) {
+        next unless $p->can('create');
+	
+        if ($uid = $p->create(%args)) {
+            $self->password(username => $args{username},
+                            password => $password);
+            last;
+        }
+    }
+
+    return $uid;
 }
 
 =head2 uid
