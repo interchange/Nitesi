@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Crypt::Password 0.23 ();
+use Data::SimplePassword;
 
 use base 'Nitesi::Object::Singleton';
 
@@ -56,6 +57,19 @@ sub password {
     $password = Crypt::Password::password($password, undef, $algorithm);
 
     return $password;
+}
+
+=head2 make_password
+
+Creates random password.
+
+=cut
+
+sub make_password {
+    my $self = shift;
+
+    $self->{generator} ||= Data::SimplePassword->new;
+    $self->{generator}->make_password;
 }
 
 =head1 AUTHOR
