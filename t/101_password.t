@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 use Nitesi::Account::Password;
 
@@ -33,3 +33,7 @@ ok($ret, 'password match (md5)');
 # check whether password fails
 $ret = $crypt->check($hash, 'wrong');
 ok(! $ret, 'password mismatch (md5)');
+
+# creates random password
+$ret = $crypt->make_password;
+ok(defined $ret && length($ret) == 8, 'random password');
