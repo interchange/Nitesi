@@ -178,6 +178,33 @@ sub create {
     return $uid;
 }
 
+=head2 delete
+
+Delete account.
+
+=cut
+
+sub delete {
+    my ($self, $uid, $p);
+
+    $self = shift;
+
+    if (@_) {
+        $uid = shift;
+    }
+    else {
+        $uid = $self->uid;
+    }
+
+    for $p (@providers) {
+        if ($p->load($uid)) {
+            return $p->delete($uid);
+        }
+    }
+
+    return;
+}
+
 =head2 uid
 
 Retrieve user identifier, returns 0 if current user
