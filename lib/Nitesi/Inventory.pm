@@ -18,6 +18,10 @@ has quantity => (
     default => quote_sub q{return 0;},
 );
 
+has in_stock => (
+    is => 'rw',
+);
+
 sub api_info {
     return {table => 'inventory',
 	    key => 'sku',
