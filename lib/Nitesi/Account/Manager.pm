@@ -268,6 +268,23 @@ sub exists {
     }
 }
 
+=head2 load
+
+Loads account data for a given uid.
+
+=cut
+
+sub load {
+    my ($self, $uid) = @_;
+    my ($data);
+
+    for my $p (@providers) {
+        if ($data = $p->load($uid)) {
+            return $data;
+        }
+    }
+}
+
 =head2 password
 
 Changes password for current account:
