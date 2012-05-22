@@ -28,9 +28,13 @@ Unique product identifier.
 
 Product name.
 
+=item short_description
+
+Short product description.
+    
 =item description
 
-Product description.
+Full product description.
 
 =item price
 
@@ -59,6 +63,10 @@ has sku => (
 );
 
 has name => (
+    is => 'rw',
+);
+
+has short_description => (
     is => 'rw',
 );
 
