@@ -150,8 +150,10 @@ sub create {
     
     # remove leading/trailing spaces from arguments
     for my $name (keys %args) {
-        $args{$name} =~ s/^\s+//;
-        $args{$name} =~ s/\s+$//;
+        if (defined $args{$name}) {
+            $args{$name} =~ s/^\s+//;
+            $args{$name} =~ s/\s+$//;
+        }
     }
 
     unless (exists $args{username} && $args{username} =~ /\S/) {
