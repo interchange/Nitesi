@@ -38,6 +38,18 @@ L<Nitesi::Account::Manager>
 To build your own business website, please take a look at
 our Dancer plugin: L<Dancer::Plugin::Nitesi>.
 
+=head1 BUNDLES
+    
+The following bundles are available for Nitesi:
+
+=over 4
+
+=item DBI
+
+L<Nitesi::DBI>
+
+=back
+    
 =head1 CART
 
 Nitesi supports multiple carts, automatic collapsing of similar items
