@@ -33,6 +33,9 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
 
     $acct->create(email => 'shopper@nitesi.biz');
 
+    # use this with caution!
+    $acct->become('shopper@nitesi.biz');
+
 =cut
 
 my @providers;
@@ -395,7 +398,34 @@ sub value {
 	return $self->{account}->{$name};
     }
 }
+
+=head2 become
+
+Become an user:
     
+    $acct->become('shopper@nitesi.biz');
+
+Please use this method with caution.
+
+Providers may choose not to support this method.
+
+=cut
+
+sub become {
+    my ($self, $username) = @_;
+    my ($p, $acct);
+    
+    for $p (@providers) {
+        if ($p->can('become')) {
+            if ($acct = $p->become($username)) {
+                $self->{session_sub}->('init', $acct);
+                $self->{account} = $acct;
+                return 1;
+            }
+        }
+    }
+}
+
 =head1 AUTHOR
 
 Stefan Hornburg (Racke), <racke@linuxia.de>
