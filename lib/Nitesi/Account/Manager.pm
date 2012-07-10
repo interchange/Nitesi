@@ -3,7 +3,7 @@ package Nitesi::Account::Manager;
 use strict;
 use warnings;
 
-use base 'Nitesi::Object::Singleton';
+use base 'Nitesi::Object';
 
 use Nitesi::Class;
 use Nitesi::Account::Password;
@@ -38,8 +38,6 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
 
 =cut
 
-my @providers;
-
 =head1 METHODS
 
 =head2 init
@@ -49,11 +47,12 @@ Initializer called by instance class method.
 =cut
 
 sub init {
-    my ($class, $instance, %args) = @_;
+    my ($self, %args) = @_;
     my ($ret, @list, $init);
 
-    $instance->{password} = Nitesi::Account::Password->instance;
-
+    $self->{password} = Nitesi::Account::Password->instance;
+    $self->{providers} = [];
+    
     if ($args{provider_sub}) {
 	# retrieve list of providers
 	$ret = $args{provider_sub}->();
@@ -68,15 +67,15 @@ sub init {
 
 	# instantiate provider objects
 	for $init (@list) {
-	    push @providers, Nitesi::Class->instantiate(@$init, crypt => $instance->{password});
+	    push @{$self->{providers}}, Nitesi::Class->instantiate(@$init, crypt => $self->{password});
 	}
     }
 
     if ($args{session_sub}) {
-	$instance->{session_sub} = $args{session_sub};
+        $self->{session_sub} = $args{session_sub};
     }
     else {
-	$instance->{session_sub} = sub {return 1;};
+        $self->{session_sub} = sub {return 1;};
     }
 }
 
@@ -117,7 +116,7 @@ sub login {
     $args{password} =~ s/^\s+//;
     $args{password} =~ s/\s+$//;
 
-    for my $p (@providers) {
+    for my $p (@{$self->{providers}}) {
 	if ($acct = $p->login(%args)) {
 	    $self->{session_sub}->('init', $acct);
 	    $self->{account} = $acct;
@@ -168,7 +167,7 @@ sub create {
         $password = $self->{password}->make_password;
     }
 
-    for my $p (@providers) {
+    for my $p (@{$self->{providers}}) {
         next unless $p->can('create');
 	
         if ($uid = $p->create(%args)) {
@@ -199,7 +198,7 @@ sub delete {
         $uid = $self->uid;
     }
 
-    for $p (@providers) {
+    for $p (@{$self->{providers}}) {
         if ($p->load($uid)) {
             return $p->delete($uid);
         }
@@ -291,7 +290,7 @@ sub exists {
 
     return unless defined $username && $username =~ /\S/;
 
-    for my $p (@providers) {
+    for my $p (@{$self->{providers}}) {
 	if ($p->exists($username)) {
 	    return $p;
 	}
@@ -308,7 +307,7 @@ sub load {
     my ($self, $uid) = @_;
     my ($data);
 
-    for my $p (@providers) {
+    for my $p (@{$self->{providers}}) {
         if ($data = $p->load($uid)) {
             return $data;
         }
@@ -415,7 +414,7 @@ sub become {
     my ($self, $username) = @_;
     my ($p, $acct);
     
-    for $p (@providers) {
+    for $p (@{$self->{providers}}) {
         if ($p->can('become')) {
             if ($acct = $p->become($username)) {
                 $self->{session_sub}->('init', $acct);
