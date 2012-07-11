@@ -106,7 +106,11 @@ API information for product class.
 
 sub api_info {
     return {table => 'products',
-	    key => 'sku',
+            key => 'sku',
+            foreign => {'Nitesi::Navigation' => {
+                table => 'navigation_products',
+                key => [qw/sku navigation/]}
+            },
     };
 };
 
