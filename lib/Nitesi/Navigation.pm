@@ -12,7 +12,7 @@ Nitesi::Navigation - Navigation class for Nitesi Shop Machine
 
 =head1 DESCRIPTION
 
-Generic avigation class for L<Nitesi>.
+Generic navigation class for L<Nitesi>.
 
 =head2 NAVIGATION
 
