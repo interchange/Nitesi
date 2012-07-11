@@ -2,20 +2,30 @@ NAME
     Nitesi - Open Source Shop Machine
 
 VERSION
-    0.0040
+    0.0050
 
 DESCRIPTION
     Nitesi, the Open Source Shop Machine, is the Modern Perl ecosystem for
     online business.
 
-    This module provides APIs for carts and account management:
+    This module provides the following APIs:
 
-    *   Nitesi::Cart
+    Carts
+        Nitesi::Cart
 
-    *   Nitesi::Account::Manager
+    Products
+        Nitesi::Product
+
+    Account Management
+        Nitesi::Account::Manager
 
     To build your own business website, please take a look at our Dancer
     plugin: Dancer::Plugin::Nitesi.
+
+BUNDLES
+    The following bundles are available for Nitesi:
+
+    DBI Nitesi::DBI
 
 CART
     Nitesi supports multiple carts, automatic collapsing of similar items

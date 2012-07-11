@@ -1,5 +1,25 @@
 Revision history for Nitesi
 
+0.0050 Wed Jul 11 13:36:38 2012 CEST
+  
+    [BUG FIXES]
+
+    * Switch account manager to a normal object instead of a singleton to
+      prevent problems with stale database handles.
+    * Reroute cart updates with quantity zero to cart removal.
+
+    [ENHANCEMENTS]
+    
+    * Add generic product class.
+    * Add provider role.
+    * Add inventory, navigation and address role.
+    * Add password generator to Nitesi::Account::Password.
+    * Add load, create, delete and become method to account manager.
+
+    [DOCUMENTATION]
+
+    * Add bundles section to Nitesi's POD.
+   
 0.0040 Sat Feb  4 10:17:41 2012 CET
 
     [ENHANCEMENTS]
