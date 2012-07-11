@@ -96,6 +96,14 @@ has inactive => (
     default => quote_sub q{return 0;},
 );
 
+=head1 METHODS
+
+=head2 api_info
+
+API information for product class.
+
+=cut
+
 sub api_info {
     return {table => 'products',
 	    key => 'sku',

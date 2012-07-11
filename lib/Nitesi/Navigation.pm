@@ -12,7 +12,7 @@ Nitesi::Navigation - Navigation class for Nitesi Shop Machine
 
 =head1 DESCRIPTION
 
-Generic Navigation class for L<Nitesi>.
+Generic avigation class for L<Nitesi>.
 
 =head2 NAVIGATION
 
@@ -46,6 +46,10 @@ entities.
 Inactive Navigations are excluded from search results and
 category listings.
 
+=item entered
+
+Creation date and time for this navigation object.
+
 =back
 
 =cut
@@ -57,7 +61,7 @@ has code => (
 has type => (
     is => 'rw',
     lazy => 1,
-    default => quote_sub q{return 'category';},   
+    default => quote_sub q{return 'category';},
 );
 
 has scope => (
@@ -103,6 +107,14 @@ has uri => (
     builder => '_build_uri',
 );
 
+=head1 METHODS
+
+=head2 api_info
+
+API information for navigation class.
+
+=cut
+
 sub api_info {
     return {table => 'navigation',
             key => 'code',
@@ -119,6 +131,12 @@ sub _build_uri {
     return $self->clean_uri;
 }
 
+=head2 clean_uri
+
+Retrieve clean URI for this navigation object.
+
+=cut
+
 sub clean_uri {
     my $self = shift;
     my $name = $self->name;
@@ -130,6 +148,12 @@ sub clean_uri {
 
     return $name;
 }
+
+=head2 move
+
+Move category to a new parent.
+
+=cut
 
 sub move {
     my ($self, $new_parent) = @_;
