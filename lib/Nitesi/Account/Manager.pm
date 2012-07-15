@@ -36,7 +36,10 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
     # use this with caution!
     $acct->become('shopper@nitesi.biz');
 
-=cut
+=head1 DESCRIPTION
+
+Nitesi's account manager transparently handles multiple providers for authentication,
+account data and permissions checks.
 
 =head1 METHODS
 
