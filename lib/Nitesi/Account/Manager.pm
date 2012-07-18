@@ -123,6 +123,7 @@ sub login {
 	if ($acct = $p->login(%args)) {
 	    $self->{session_sub}->('init', $acct);
 	    $self->{account} = $acct;
+        $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
 	    $success = 1;
 	    last;
 	}
@@ -422,6 +423,7 @@ sub become {
             if ($acct = $p->become($username)) {
                 $self->{session_sub}->('init', $acct);
                 $self->{account} = $acct;
+                $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
                 return 1;
             }
         }
