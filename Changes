@@ -1,5 +1,16 @@
 Revision history for Nitesi
 
+0.0051
+
+    [BUG FIXES]
+
+    * Create ACL object immediately after successful login or become
+      operation (RT #78326).
+
+    [DOCUMENTATION]
+
+    * Add description section to account manager's POD.
+
 0.0050 Wed Jul 11 13:36:38 2012 CEST
   
     [BUG FIXES]
