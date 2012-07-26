@@ -146,7 +146,17 @@ sub logout {
 
 =head2 create
 
-Create account.
+Creates account.
+
+    $acct->create(email => 'shopper@nitesi.biz');
+
+Returns uid for the new account.
+
+The password is automatically generated unless you pass it to
+this method:
+
+    $acct->create(email => 'shopper@nitesi.biz',
+                  password => 'nevairbe');
 
 =cut
 
