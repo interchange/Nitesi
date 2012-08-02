@@ -12,6 +12,11 @@ use base 'Nitesi::Object::Singleton';
 
 Nitesi::Account::Password - Password class for Nitesi Shop Machine
 
+=head1 DESCRIPTION
+
+Allows to create random passwords, password hashes from cleartext
+passwords and password checks.
+
 =head1 METHODS
 
 =head2 check
