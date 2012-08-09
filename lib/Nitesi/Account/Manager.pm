@@ -123,6 +123,7 @@ sub login {
 	if ($acct = $p->login(%args)) {
 	    $self->{session_sub}->('init', $acct);
 	    $self->{account} = $acct;
+        $self->{account_provider} = $p;
         $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
 	    $success = 1;
 	    last;
@@ -141,6 +142,13 @@ Perform logout.
 sub logout {
     my ($self, %args) = @_;
 
+    if ($self->{account}) {
+        $self->{account_provider}->logout;
+        delete $self->{account};
+        delete $self->{account_provider};
+        $self->{acl} = ACL::Lite->new;
+    }
+    
     $self->{session_sub}->('destroy');
 }
 
