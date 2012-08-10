@@ -70,7 +70,7 @@ sub _base_role {
 sub _build_attribute_map {
     my $self = shift;
     my (@classes, $name, $value, @attributes, %map, @rt_atts, %rt_map,
-        $virtual);
+        $virtual, $foreign);
 
     @classes = grep {$_ ne 'WITH' && $_ ne 'AND'} split(/__/, ref($self));
 
@@ -83,6 +83,13 @@ sub _build_attribute_map {
             $virtual = {};
         }
 
+        if (exists $self->api_info->{$role}->{foreign}) {
+            $foreign = $self->api_info->{$role}->{foreign};
+        }
+        else {
+            $foreign = {};
+        }
+
         while (($name, $value) = each %{$Moo::MAKERS{$role}->{constructor}->{attribute_specs}}) {
             next if $name =~ /^api_/;
 
@@ -90,6 +97,10 @@ sub _build_attribute_map {
 
             if (exists $virtual->{$name}) {
                 $map{$name}->{virtual} = $virtual->{$name};
+            }
+
+            if (exists $foreign->{$name}) {
+                $map{$name}->{foreign} = $foreign->{$name};
             }
         }
 
