@@ -105,7 +105,8 @@ API information for product class.
 =cut
 
 sub api_info {
-    return {table => 'products',
+    return {base => __PACKAGE__,
+            table => 'products',
             key => 'sku',
             foreign => {'Nitesi::Navigation' => {
                 table => 'navigation_products',
