@@ -69,6 +69,14 @@ has shipping_description => (
     is => 'rw',
 );
 
+has payment_method => (
+    is => 'rw',
+);
+
+has payment_id => (
+    is => 'rw',
+);
+
 has aid_shipping => (
     is => 'rw',
 );
