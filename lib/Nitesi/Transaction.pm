@@ -69,6 +69,10 @@ has shipping_description => (
     is => 'rw',
 );
 
+has shipping_tax_rate => (
+    is => 'rw',
+);
+
 has payment_method => (
     is => 'rw',
 );
