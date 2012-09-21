@@ -339,7 +339,12 @@ sub status {
 	$self->{account} = $self->{session_sub}->('update', {@args});
     }
     elsif (@args == 1) {
-	return $self->{account}->{$args[0]};
+        if (exists $self->{account}->{$args[0]}) {
+            return $self->{account}->{$args[0]};
+        }
+        else {
+            return '';
+        }
     }
 }
 
