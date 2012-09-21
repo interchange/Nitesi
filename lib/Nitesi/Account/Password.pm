@@ -68,6 +68,11 @@ sub password {
 
 Creates random password.
 
+
+B<Example>
+
+	$crypt->make_password();
+
 =cut
 
 sub make_password {

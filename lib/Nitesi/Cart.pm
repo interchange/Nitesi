@@ -175,6 +175,17 @@ than zero. Default for quantity is 1.
 
 Item price is required and a positive number.
 
+Price is required, because you want to maintain the price that was valid at the time of adding to the cart. Should the price in the shop change in the meantime, it will maintain this price. If you would like to update the pages, you have to do it before loading the cart page on your shop.
+
+
+B<Example:> Add 5 BMX2012 products to the cart
+
+	$cart->add( sku => 'BMX2012', quantity => 5, price => 200);
+
+B<Example:> Add a BMX2012 product to the cart.
+
+	$cart->add( sku => 'BMX2012', price => 200);
+
 =back
 
 =cut
@@ -296,7 +307,7 @@ sub remove {
 
 =head2 update
 
-Update items in the cart.
+Update quantity of items in the cart.
 
 Parameters are pairs of SKUs and quantities, e.g.
 
@@ -378,7 +389,7 @@ sub clear {
 =head2 quantity
 
 Returns the sum of the quantity of all items in the shopping cart,
-which is commonly used as number of items.
+which is commonly used as number of items. If you have 5 apples and 6 pears it will return 11.
 
     print 'Items in your cart: ', $cart->quantity, "\n";
 
@@ -397,7 +408,7 @@ sub quantity {
 
 =head2 count
 
-Returns the number of different items in the shopping cart.
+Returns the number of different items in the shopping cart. If you have 5 apples and 6 pears it will return 2 (2 different items).
 
 =cut
 
@@ -409,21 +420,27 @@ sub count {
 
 =head2 apply_cost 
 
-Apply cost to cart.
+Apply cost to cart. apply_cost is a generic method typicaly used for taxes, discounts, coupons, gift certificates,...
 
-Absolute cost:
+B<Example:> Absolute cost
 
-    $cart->apply_cost(amount => 5, name => 'shipping', label => 'Shipping');
+	Uses absolute value for amount. Amount 5 is 5 units of currency used (ie. $5).
 
-Relative cost:
+	$cart->apply_cost(amount => 5, name => 'shipping', label => 'Shipping');
 
-    $cart->apply_cost(amount => 0.19, name => 'tax', label => 'Sales Tax',
-                      relative => 1);
+B<Example:> Relative cost
 
-Inclusive cost:
+	Uses percentage instead of value for amount. Amount 0.19 in example is 19%.
 
-   $cart->apply_cost(amount => 0.19, name => 'tax', label => 'Sales Tax',
-                      relative => 1, inclusive => 1);
+	relative is a boolean value (0/1).
+
+	$cart->apply_cost(amount => 0.19, name => 'tax', label => 'VAT', relative => 1);
+
+B<Example:> Inclusive cost
+
+	Same as relative cost, but it assumes that tax was included in the subtotal already, and only displays it (19% of subtotal value in example). Inclusive is a boolean value (0/1).
+
+	$cart->apply_cost(amount => 0.19, name => 'tax', label => 'Sales Tax', relative => 1, inclusive => 1);
 
 =cut
 
@@ -440,7 +457,7 @@ sub apply_cost {
 
 =head2 clear_cost
 
-Clear costs.
+It removes all the costs previously applied (using apply_cost). Used typically if you have free shipping or something similar, you can clear the costs.
 
 =cut
 
@@ -455,6 +472,18 @@ sub clear_cost {
 =head2 cost
 
 Returns particular cost by position or by name.
+
+B<Example:> Return tax value by name
+	
+	$cart->cost('tax'); 
+
+	Returns value of the tax (absolute value in your currency, not percantage)
+
+B<Example:> Return tax value by position
+
+	$cart->cost(0); 
+
+	Returns the cost that was first applied to subtotal. By increasing the number you can retrieve other costs applied.
 
 =cut
 
@@ -538,6 +567,14 @@ sub error {
 =head2 seed $item_ref
 
 Seeds items within the cart from $item_ref.
+
+B<Example:>
+
+	$cart->seed([
+		{ sku => 'BMX2015', price => 20, quantity = 1 },
+		{ sku => 'KTM2018', price => 400, quantity = 5 },
+		{ sku => 'DBF2020', price => 200, quantity = 5 },
+	]);
 
 =cut
 
