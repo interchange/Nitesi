@@ -159,19 +159,19 @@ sub logout {
 
 =head2 create
 
-Creates account.
+Creates account and returns uid for the new account
+in case of success.
 
 B<Example:>
 
-	$account->create(email => 'shopper@nitesi.biz');
-
-	Returns uid for the new account.
-
+    $uid = $account->create(email => 'shopper@nitesi.biz');
 
 The password is automatically generated unless you pass it to
-this method:
+this method.
 
-    $account->create(email => 'shopper@nitesi.biz',
+B<Example:>
+
+    $uid = $account->create(email => 'shopper@nitesi.biz',
                   password => 'nevairbe');
 
 =cut
@@ -311,21 +311,22 @@ sub has_role {
 
 Helps you to redirect users properly on pages available only to authenticated users.
 
-B<Example:> Before login - Page available only if you are logged in (Step 1) 
+B<Example:> Before login - Page available only if you are logged in (Step 1)
 
-	You are not logged in. You are on a page which is available only to those logged in. You set the message for users not logged in and url of the page where you send them after successful login.
+You are not logged in. You are on a page which is available only to those logged in.
+You set the message for users not logged in and url of the page where you send them after successful login.
 
 	$account->status(login_info => 'Please login before checkout', login_continue => 'checkout');
 
 B<Example:> At Login page (Step 2)
 
-	You retrieve the login message to make clear to user why they need to login (to access the page from step 1) 
+You retrieve the login message to make clear to user why they need to login (to access the page from step 1) 
 
 	$account->status('login_info');
 
 B<Example:> After login (Step 3)
 
-	Retrieve the login_continue URL and send user to that URL (using redirect or something similar).
+Retrieve the login_continue URL and send user to that URL (using redirect or something similar).
 
 	$account->status('login_continue');
 
@@ -352,11 +353,11 @@ sub status {
 
 Check whether account exists.
 
-B<Example:>    
+B<Example:>
 
-if ($account->exists('shopper@nitesi.biz')) {
+  if ($account->exists('shopper@nitesi.biz')) {
         print "Account exists\n";
-    }
+  }
 
 =cut
 
@@ -444,7 +445,8 @@ B<Example:>
 
 B<Example:>
 
-	If you check multiple permissions at once, only one has to granted. The check will return the name of the first granted one in the list (left to right).
+If you check multiple permissions at once, only one has to granted.
+The check will return the name of the first granted one in the list (left to right).
 
 	if ( $account->acl( check => [ qw/admin luka/ ] ) {
 		print "This is Luka's account. Only Luka and administrators can see it".
