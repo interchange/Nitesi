@@ -101,7 +101,8 @@ sub init_from_session {
 
 =head2 login
 
-Perform login. 
+Perform login. Returns 1 in case of success and
+0 in case of failure.
 
 Leading and trailing spaces will be removed from
 username and password in advance.
@@ -111,6 +112,8 @@ username and password in advance.
 sub login {
     my ($self, %args) = @_;
     my ($success, $acct);
+
+    $success = 0;
 
     # remove leading/trailing spaces from username and password
     $args{username} =~ s/^\s+//;
