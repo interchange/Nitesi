@@ -15,26 +15,26 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
 
 =head1 SYNOPSIS
 
-    $acct = Nitesi::Account::Manager->instance(provider_sub => \&account_providers, 
+    $account = Nitesi::Account::Manager->instance(provider_sub => \&account_providers, 
                                                session_sub => \&session);
 
-    $acct->init_from_session;
+    $account->init_from_session;
 
-    $acct->status(login_info => 'Please login before checkout',
+    $account->status(login_info => 'Please login before checkout',
                   login_continue => 'checkout');
 
-    $acct->login(username => 'shopper@nitesi.biz', password => 'nevairbe');
+    $account->login(username => 'shopper@nitesi.biz', password => 'nevairbe');
 
-    $acct->logout();
+    $account->logout();
 
-    if ($acct->exists('shopper@nitesi.biz')) {
-        $acct->password(username => 'shopper@nitesi.biz', password => 'nevairbe');
+    if ($account->exists('shopper@nitesi.biz')) {
+        $account->password(username => 'shopper@nitesi.biz', password => 'nevairbe');
     }
 
-    $acct->create(email => 'shopper@nitesi.biz');
+    $account->create(email => 'shopper@nitesi.biz');
 
     # use this with caution!
-    $acct->become('shopper@nitesi.biz');
+    $account->become('shopper@nitesi.biz');
 
 =head1 DESCRIPTION
 
@@ -101,7 +101,8 @@ sub init_from_session {
 
 =head2 login
 
-Perform login. 
+Perform login. Returns 1 in case of success and
+0 in case of failure.
 
 Leading and trailing spaces will be removed from
 username and password in advance.
@@ -111,6 +112,8 @@ username and password in advance.
 sub login {
     my ($self, %args) = @_;
     my ($success, $acct);
+
+    $success = 0;
 
     # remove leading/trailing spaces from username and password
     $args{username} =~ s/^\s+//;
@@ -135,7 +138,12 @@ sub login {
 
 =head2 logout
 
-Perform logout.
+Perform	logout.
+
+
+B<Example:>
+
+	$account->logout();
 
 =cut
 
@@ -154,16 +162,19 @@ sub logout {
 
 =head2 create
 
-Creates account.
+Creates account and returns uid for the new account
+in case of success.
 
-    $acct->create(email => 'shopper@nitesi.biz');
+B<Example:>
 
-Returns uid for the new account.
+    $uid = $account->create(email => 'shopper@nitesi.biz');
 
 The password is automatically generated unless you pass it to
-this method:
+this method.
 
-    $acct->create(email => 'shopper@nitesi.biz',
+B<Example:>
+
+    $uid = $account->create(email => 'shopper@nitesi.biz',
                   password => 'nevairbe');
 
 =cut
@@ -206,6 +217,10 @@ sub create {
 
 Delete account.
 
+B<Example:>
+
+	$account->delete('333');
+
 =cut
 
 sub delete {
@@ -231,8 +246,12 @@ sub delete {
 
 =head2 uid
 
-Retrieve user identifier, returns 0 if current user
+Retrieve user identifier of the current user, returns 0 if current user
 isn't authenticated.
+
+B<Example:>
+
+	$account->uid();
 
 =cut
 
@@ -244,8 +263,12 @@ sub uid {
 
 =head2 username
 
-Retrieve username. Returns empty string if current user
-isn't authenticated.
+Retrieve username of the current user. Returns empty string if current user
+isn't authenticated. If you want to retrieve other user username, use $account->load.
+
+B<Example:>
+
+	$account->username();
 
 =cut
 
@@ -257,7 +280,11 @@ sub username {
 
 =head2 roles
 
-Retrieve roles of this user.
+Retrieve roles of current user.
+
+B<Example:>
+
+	$account->roles();
 
 =cut
 
@@ -271,6 +298,10 @@ sub roles {
 
 Returns true if user is a member of the given role.
 
+B<Example:>
+
+	if ($account->has_role('admin') { print "Congratulations, you are the admin" };
+
 =cut
 
 sub has_role {
@@ -281,7 +312,26 @@ sub has_role {
 
 =head2 status
 
-Saves or retrieves status information.
+Helps you to redirect users properly on pages available only to authenticated users.
+
+B<Example:> Before login - Page available only if you are logged in (Step 1)
+
+You are not logged in. You are on a page which is available only to those logged in.
+You set the message for users not logged in and url of the page where you send them after successful login.
+
+	$account->status(login_info => 'Please login before checkout', login_continue => 'checkout');
+
+B<Example:> At Login page (Step 2)
+
+You retrieve the login message to make clear to user why they need to login (to access the page from step 1) 
+
+	$account->status('login_info');
+
+B<Example:> After login (Step 3)
+
+Retrieve the login_continue URL and send user to that URL (using redirect or something similar).
+
+	$account->status('login_continue');
 
 =cut
 
@@ -293,7 +343,12 @@ sub status {
 	$self->{account} = $self->{session_sub}->('update', {@args});
     }
     elsif (@args == 1) {
-	return $self->{account}->{$args[0]};
+        if (exists $self->{account}->{$args[0]}) {
+            return $self->{account}->{$args[0]};
+        }
+        else {
+            return '';
+        }
     }
 }
 
@@ -301,9 +356,11 @@ sub status {
 
 Check whether account exists.
 
-    if ($acct->exists('shopper@nitesi.biz')) {
+B<Example:>
+
+  if ($account->exists('shopper@nitesi.biz')) {
         print "Account exists\n";
-    }
+  }
 
 =cut
 
@@ -321,7 +378,11 @@ sub exists {
 
 =head2 load
 
-Loads account data for a given uid.
+Returns account data for a given uid as hash.
+
+B<Example:>
+
+	$account->load('333');
 
 =cut
 
@@ -340,11 +401,11 @@ sub load {
 
 Changes password for current account:
 
-    $acct->password('nevairbe');
+    $account->password('nevairbe');
 
 Changes password for other account:
 
-    $acct->password(username => 'shopper@nitesi.biz',
+    $account->password(username => 'shopper@nitesi.biz',
                     password => 'nevairbe');
 
 =cut
@@ -376,7 +437,23 @@ sub password {
 
 =head2 acl
 
-ACL check, see L<ACL::Lite> for details.
+ACL (Access list) check, see L<ACL::Lite> for details.
+
+B<Example:>
+
+	if ( $account->acl( check => 'view_prices') {
+		print "You can see prices";
+	}
+
+
+B<Example:>
+
+If you check multiple permissions at once, only one has to granted.
+The check will return the name of the first granted one in the list (left to right).
+
+	if ( $account->acl( check => [ qw/admin luka/ ] ) {
+		print "This is Luka's account. Only Luka and administrators can see it".
+	}
 
 =cut
 
@@ -392,7 +469,15 @@ sub acl {
 
 =head2 value
 
-Retrieve account data.
+Retrieve or set account data.
+
+B<Example:> Retrieve city
+
+	$city = $account->value( 'city');
+
+B<Example:> Set city
+
+	$city = $account->value( city => 'Ljubljana');
 
 =cut
 
@@ -422,13 +507,13 @@ sub value {
 
 =head2 become
 
-Become an user:
+Become any user you want:
     
     $acct->become('shopper@nitesi.biz');
 
 Please use this method with caution.
 
-Providers may choose not to support this method.
+Some parts of the system (DBI, LDAP,...) may choose not to support this method.
 
 =cut
 

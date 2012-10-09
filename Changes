@@ -1,6 +1,26 @@
 Revision history for Nitesi
 
-0.0051
+0.0052 Tue Oct  9 15:46:05 2012 CEST
+
+    [BUG FIXES]
+
+    * Return empty string for missing account status variables instead of
+      undef.
+    * Erase account data from account manager object on logout.
+
+    [ENHANCEMENTS]
+
+    * Change return value of account manager's login method to 0 in case of
+      failure.
+
+    [DOCUMENTATION]
+
+    * Improve documentation with more examples and explanations.
+      (Jure Kodžoman)
+    * Expand documentation on Nitesi::Account::Manager's create method.
+    * Add description section to Nitesi::Account::Password's POD.
+
+0.0051 Wed Jul 18 11:17:42 2012 CEST
 
     [BUG FIXES]
 
