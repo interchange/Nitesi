@@ -122,15 +122,18 @@ sub login {
     $args{password} =~ s/^\s+//;
     $args{password} =~ s/\s+$//;
 
+    my $id = 0;
+
     for my $p (@{$self->{providers}}) {
-	if ($acct = $p->login(%args)) {
-	    $self->{session_sub}->('init', $acct);
-	    $self->{account} = $acct;
-        $self->{account_provider} = $p;
-        $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
-	    $success = 1;
-	    last;
-	}
+        if ($acct = $p->login(%args)) {
+            $acct->{provider_id} = $id;
+            $self->{session_sub}->('init', $acct);
+            $self->{account} = $acct;
+            $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
+            $success = 1;
+            last;
+        }
+        $id++;
     }
 
     return $success;
@@ -149,14 +152,19 @@ B<Example:>
 
 sub logout {
     my ($self, %args) = @_;
+    my ($provider);
 
     if ($self->{account}) {
-        $self->{account_provider}->logout;
+        $provider = $self->{providers}->[$self->{account}->{provider_id}];
+
+        if ($provider->can('logout')) {
+            $self->{providers}->[$self->{account}->{provider_id}]->logout;
+        }
+
         delete $self->{account};
-        delete $self->{account_provider};
         $self->{acl} = ACL::Lite->new;
     }
-    
+
     $self->{session_sub}->('destroy');
 }
 
@@ -520,16 +528,21 @@ Some parts of the system (DBI, LDAP,...) may choose not to support this method.
 sub become {
     my ($self, $username) = @_;
     my ($p, $acct);
-    
+
+    my $id = 0;
+
     for $p (@{$self->{providers}}) {
         if ($p->can('become')) {
             if ($acct = $p->become($username)) {
+                $acct->{provider_id} = $id;
                 $self->{session_sub}->('init', $acct);
                 $self->{account} = $acct;
                 $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
                 return 1;
             }
         }
+
+        $id++;
     }
 }
 

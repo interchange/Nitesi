@@ -330,7 +330,7 @@ sub update {
 	$sku = shift @args;
 	$qty = shift @args;
 
-	unless ($item = $self->_find($sku)) {
+	unless ($item = $self->find($sku)) {
 	    die "Item for $sku not found in cart.\n";
 	}
 
@@ -382,6 +382,29 @@ sub clear {
     $self->{total} = 0;
     $self->{cache_subtotal} = 1;
     $self->{cache_total} = 1;
+
+    return;
+}
+
+=head2 find
+
+Searches for an cart item with the given SKU.
+Returns cart item in case of sucess.
+
+    if ($item = $cart->find(9780977920174)) {
+        print "Quantity: $item->{quantity}.\n";
+    }
+
+=cut
+
+sub find {
+    my ($self, $sku) = @_;
+
+    for my $cartitem (@{$self->{items}}) {
+	if ($sku eq $cartitem->{sku}) {
+	    return $cartitem;
+        }
+    }
 
     return;
 }
@@ -587,18 +610,6 @@ sub seed {
     $self->{cache_subtotal} = $self->{cache_total} = 0;
 
     return $self->{items};
-}
-
-sub _find {
-    my ($self, $sku) = @_;
-
-    for my $cartitem (@{$self->{items}}) {
-	if ($sku eq $cartitem->{sku}) {
-	    return $cartitem;
-        }
-    }
-
-    return;
 }
 
 sub _combine {

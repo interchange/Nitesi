@@ -36,13 +36,13 @@ has in_stock => (
 
 =head1 METHODS
 
-=head2 api_info
+=head2 inventory_api_info
 
 API information for inventory class.
 
 =cut
 
-sub api_info {
+sub inventory_api_info {
     return {table => 'inventory',
 	    key => 'sku',
 	    sparse => 1,

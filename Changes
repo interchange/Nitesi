@@ -1,5 +1,21 @@
 Revision history for Nitesi
 
+0.0053 Fri Oct 26 11:24:14 2012 CEST
+
+    [API CHANGES]
+
+    * Rename api_info method of Nitesi::Inventory class to
+      inventory_api_info. This resolves a conflict when composing Nitesi
+      objects from multiple roles.
+
+    [BUG FIXES]
+
+    * Fix crash on missing account provider during logout.
+
+    [ENHANCEMENTS]
+
+    * Elevate _find to a public method for Nitesi::Cart.
+
 0.0052 Tue Oct  9 15:46:05 2012 CEST
 
     [BUG FIXES]
