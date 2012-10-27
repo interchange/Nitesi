@@ -17,6 +17,7 @@ WriteMakefile(
         'Crypt::Password' => 0.23,
         'Data::SimplePassword' => 0,
 	'Moo' => 0.091004,
+        'MooX::Types::MooseLike' => 0.16,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Nitesi-*' },
