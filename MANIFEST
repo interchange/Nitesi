@@ -7,6 +7,7 @@ lib/Nitesi/Account/Password.pm
 lib/Nitesi/Address.pm
 lib/Nitesi/Cart.pm
 lib/Nitesi/Class.pm
+lib/Nitesi/Core/Types.pm
 lib/Nitesi/Inventory.pm
 lib/Nitesi/Navigation.pm
 lib/Nitesi/Object.pm
