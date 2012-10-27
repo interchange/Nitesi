@@ -4,6 +4,7 @@ MANIFEST.SKIP
 lib/Nitesi.pm
 lib/Nitesi/Account/Manager.pm
 lib/Nitesi/Account/Password.pm
+lib/Nitesi/Account/Provider/Test.pm
 lib/Nitesi/Address.pm
 lib/Nitesi/Cart.pm
 lib/Nitesi/Class.pm
