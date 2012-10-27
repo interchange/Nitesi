@@ -22,6 +22,7 @@ t/001_base.t
 t/003_cart.t
 t/004_cost.t
 t/101_password.t
+t/account-manager.t
 t/manifest.t
 t/pod.t
 t/pod-coverage.t
