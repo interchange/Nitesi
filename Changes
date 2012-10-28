@@ -1,5 +1,18 @@
 Revision history for Nitesi
 
+0.0060 Sun Oct 28 15:47:36 2012 CET
+
+    [ENHANCEMENTS]
+
+    * Add Nitesi::Core::Types class.
+    * Add account role.
+    * Add Nitesi::Transaction class.
+ 
+    [TESTS]
+
+    * Add test account provider.
+    * Add tests for account manager.
+
 0.0053 Fri Oct 26 11:24:14 2012 CEST
 
     [API CHANGES]
