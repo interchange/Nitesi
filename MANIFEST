@@ -16,6 +16,7 @@ lib/Nitesi/Object.pm
 lib/Nitesi/Object/Singleton.pm
 lib/Nitesi/Product.pm
 lib/Nitesi/Provider/Role.pm
+lib/Nitesi/Transaction.pm
 Makefile.PL
 README
 t/001_base.t
