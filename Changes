@@ -1,5 +1,11 @@
 Revision history for Nitesi
 
+0.0061 Sun Oct 28 18:42:44 2012 CET
+
+    [BUG FIXES]
+
+    * Add Nitesi::Transaction to MANIFEST.
+
 0.0060 Sun Oct 28 15:47:36 2012 CET
 
     [ENHANCEMENTS]
