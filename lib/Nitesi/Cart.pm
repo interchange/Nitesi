@@ -54,6 +54,7 @@ sub new {
     $self = {error => '', items => [], modifiers => [],
 	     costs => [], subtotal => 0, total => 0, 
 	     cache_subtotal => 1, cache_total => 1,
+             created => 0, last_modified => 0,
     };
 
     if ($args{name}) {
@@ -245,7 +246,8 @@ sub add {
     $self->{cache_subtotal} = $self->{cache_total} = 0;
 
     unless ($ret = $self->_combine(\%item)) {
-	push @{$self->{items}}, \%item;
+        push @{$self->{items}}, \%item;
+        $self->{last_modified} = time;
     }
 
     # run hooks after adding item to cart
@@ -294,6 +296,8 @@ sub remove {
 
 	# removing item from our array
 	splice(@{$self->{items}}, $pos, 1);
+
+    $self->{last_modified} = time;
 
 	$self->_run_hook('after_cart_remove', $self, $item);
 	return 1;
@@ -354,6 +358,8 @@ sub update {
 	    return;
 	}
 
+    $self->{last_modified} = time;
+
 	$self->_run_hook('after_cart_update', $self, $item, $new_item);
 
 	$item->{quantity} = $qty;
@@ -382,6 +388,8 @@ sub clear {
     $self->{total} = 0;
     $self->{cache_subtotal} = 1;
     $self->{cache_total} = 1;
+
+    $self->{last_modified} = time;
 
     return;
 }
@@ -427,6 +435,30 @@ sub quantity {
     }
 
     return $qty;
+}
+
+=head2 created
+
+Returns the time (epoch) when the cart was created.
+
+=cut
+
+sub created {
+    my ($self) = @_;
+
+    return $self->{created};
+}
+
+=head2 last_modified
+
+Returns the time (epoch) when the cart was last modified.
+
+=cut
+
+sub last_modified {
+    my ($self) = @_;
+
+    return $self->{last_modified};
 }
 
 =head2 count
@@ -568,6 +600,7 @@ sub name {
 	$self->_run_hook('before_cart_rename', $self, $old_name, $_[0]);
 
 	$self->{name} = $_[0];
+    $self->{last_modified} = time;
 
 	$self->_run_hook('after_cart_rename', $self, $old_name, $_[0]);
     }
@@ -608,6 +641,8 @@ sub seed {
 
     # clear cache flags
     $self->{cache_subtotal} = $self->{cache_total} = 0;
+
+    $self->{last_modified} = time;
 
     return $self->{items};
 }
