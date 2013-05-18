@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 34;
+use Test::More tests => 38;
 
 use Nitesi::Cart;
 
@@ -26,19 +26,22 @@ $cart = Nitesi::Cart->new();
 $item = {};
 $ret = $cart->add($item);
 ok(! defined($ret));
+ok(! $cart->last_modified);
 
 $item->{sku} = 'ABC';
 $ret = $cart->add($item);
 ok(! defined($ret));
+ok(! $cart->last_modified);
 
 $item->{name} = 'Foobar';
 $ret = $cart->add($item);
 ok(! defined($ret));
+ok(! $cart->last_modified);
 
 $item->{price} = '42';
 $ret = $cart->add($item);
 ok(ref($ret) eq 'HASH', $cart->error);
-
+ok($cart->last_modified > 0);
 $ret = $cart->items();
 ok(@$ret == 1, "Items: $ret");
 
