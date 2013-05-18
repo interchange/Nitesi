@@ -78,6 +78,10 @@ has price => (
     is => 'rw',
 );
 
+has uri => (
+    is => 'rw',
+);
+
 has weight => (
     is => 'rw',
     lazy => 1,
