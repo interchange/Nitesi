@@ -318,6 +318,24 @@ sub has_role {
     grep {$role eq $_} @{$self->{account}->{roles}};
 }
 
+=head2 permissions
+
+Returns permissions as hash reference:
+
+    $perms = $account->permissions;
+
+Returns permissions as list:
+
+    @perms = $account->permissions;
+
+=cut
+
+sub permissions {
+    my ($self) = @_;
+
+    return $self->{acl}->permissions;
+}
+
 =head2 status
 
 Helps you to redirect users properly on pages available only to authenticated users.

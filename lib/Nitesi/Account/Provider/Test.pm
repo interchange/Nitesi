@@ -36,7 +36,9 @@ sub login {
 
     if (exists $users->{$args{username}}
         && $args{password} eq $users->{$args{username}}->{password}) {
-        return {username => $args{username}};
+        return {username => $args{username},
+               permissions => $users->{$args{username}}->{permissions},
+               };
     }
 }
 
