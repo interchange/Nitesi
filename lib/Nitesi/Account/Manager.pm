@@ -7,7 +7,7 @@ use base 'Nitesi::Object';
 
 use Nitesi::Class;
 use Nitesi::Account::Password;
-use ACL::Lite; 
+use ACL::Lite 0.0002;
 
 =head1 NAME
 

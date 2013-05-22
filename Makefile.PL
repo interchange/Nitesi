@@ -13,7 +13,7 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
-	'ACL::Lite'  => 0.0001,
+	'ACL::Lite'  => 0.0002,
         'Crypt::Password' => 0.23,
         'Data::SimplePassword' => 0,
 	'Moo' => 0.091004,
