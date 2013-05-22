@@ -1,5 +1,17 @@
 Revision history for Nitesi
 
+0.0070 Wed May 22 17:04:39 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Add uri method to Nitesi::Product.
+    * Add created and last_modified attributes to Nitesi::Cart.
+    * Add permissions method to account manager.
+
+    [TESTS]
+
+    * Execute POD tests only for release testing.
+
 0.0061 Sun Oct 28 18:42:44 2012 CET
 
     [BUG FIXES]
