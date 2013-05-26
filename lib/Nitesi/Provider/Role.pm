@@ -70,12 +70,19 @@ sub _base_role {
 sub _build_attribute_map {
     my $self = shift;
     my (@classes, $name, $value, @attributes, %map, @rt_atts, %rt_map,
-        $virtual, $foreign);
+        $virtual, $foreign, $att_settings);
 
     @classes = grep {$_ ne 'WITH' && $_ ne 'AND'} split(/__/, ref($self));
 
     # determine attributes of this and parent classes
     for my $role (@classes) {
+        if (exists $self->api_info->{$role}->{attributes}) {
+            $att_settings = $self->api_info->{$role}->{attributes};
+        }
+        else {
+            $att_settings = {};
+        }
+
         if (exists $self->api_info->{$role}->{virtual}) {
             $virtual = $self->api_info->{$role}->{virtual};
         }
@@ -94,6 +101,15 @@ sub _build_attribute_map {
             next if $name =~ /^api_/;
 
             $map{$name} = {role => $role};
+
+            if (exists $att_settings->{$name}) {
+                if (defined $att_settings->{$name}) {
+                    $map{$name}->{map} = $att_settings->{$name};
+                }
+                else {
+                    delete $map{$name};
+                }
+            }
 
             if (exists $virtual->{$name}) {
                 $map{$name}->{virtual} = $virtual->{$name};
