@@ -21,4 +21,9 @@ WriteMakefile(
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Nitesi-*' },
+    META_MERGE        => {
+        resources => {
+            repository  => 'https://github.com/racke/Nitesi',
+        },
+    },
 );
