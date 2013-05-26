@@ -1,5 +1,13 @@
 Revision history for Nitesi
 
+0.0080 Sun May 26 10:30:47 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Add api_attributes method to Nitesi::Product.
+    * Add support for API attributes to Nitesi::Provider::Role.
+    * Add Git repository to Makefile.PL
+
 0.0070 Wed May 22 17:04:39 2013 CEST
 
     [ENHANCEMENTS]
