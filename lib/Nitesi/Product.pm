@@ -106,6 +106,17 @@ has inactive => (
 
 =head1 METHODS
 
+=head2 api_attributes
+
+API attributes for product class.
+
+=cut
+
+has api_attributes => (
+    is => 'rw',
+);
+
+
 =head2 api_info
 
 API information for product class.
@@ -113,9 +124,12 @@ API information for product class.
 =cut
 
 sub api_info {
+    my $self = shift;
+
     return {base => __PACKAGE__,
             table => 'products',
             key => 'sku',
+            attributes => $self->api_attributes,
             foreign => {'Nitesi::Navigation' => {
                 table => 'navigation_products',
                 key => [qw/sku navigation/]}
