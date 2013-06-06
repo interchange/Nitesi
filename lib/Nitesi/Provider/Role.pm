@@ -70,7 +70,7 @@ sub _base_role {
 sub _build_attribute_map {
     my $self = shift;
     my (@classes, $name, $value, @attributes, %map, @rt_atts, %rt_map,
-        $virtual, $foreign, $att_settings);
+        $virtual, $foreign, $inherit, $att_settings);
 
     @classes = grep {$_ ne 'WITH' && $_ ne 'AND'} split(/__/, ref($self));
 
@@ -97,27 +97,14 @@ sub _build_attribute_map {
             $foreign = {};
         }
 
-        while (($name, $value) = each %{$Moo::MAKERS{$role}->{constructor}->{attribute_specs}}) {
-            next if $name =~ /^api_/;
+        if (exists $self->api_info->{$role}->{inherit}) {
+            $inherit =  $self->api_info->{$role}->{inherit};
+        }
 
-            $map{$name} = {role => $role};
+        $self->_lookup_attributes_from_moo($role, $role, \%map, $att_settings, $foreign, $virtual);
 
-            if (exists $att_settings->{$name}) {
-                if (defined $att_settings->{$name}) {
-                    $map{$name}->{map} = $att_settings->{$name};
-                }
-                else {
-                    delete $map{$name};
-                }
-            }
-
-            if (exists $virtual->{$name}) {
-                $map{$name}->{virtual} = $virtual->{$name};
-            }
-
-            if (exists $foreign->{$name}) {
-                $map{$name}->{foreign} = $foreign->{$name};
-            }
+        if ($inherit && $classes[0] eq $role) {
+            $self->_lookup_attributes_from_moo($inherit, $role, \%map, $att_settings, $foreign, $virtual);
         }
 
         @rt_atts = @{$Role::Tiny::INFO{$role}->{attributes} || []};
@@ -148,6 +135,34 @@ sub _build_attribute_map {
     }
 
     return \%map;
+}
+
+sub _lookup_attributes_from_moo {
+    my ($self, $lookup, $role, $mapref, $att_settings, $foreign, $virtual) = @_;
+    my ($name, $value);
+
+    while (($name, $value) = each %{$Moo::MAKERS{$lookup}->{constructor}->{attribute_specs}}) {
+        next if $name =~ /^api_/;
+
+        $mapref->{$name} = {role => $role};
+
+        if (exists $att_settings->{$name}) {
+            if (defined $att_settings->{$name}) {
+                $mapref->{$name}->{map} = $att_settings->{$name};
+            }
+            else {
+                delete $mapref->{$name};
+            }
+        }
+
+        if (exists $virtual->{$name}) {
+            $mapref->{$name}->{virtual} = $virtual->{$name};
+        }
+
+        if (exists $foreign->{$name}) {
+            $mapref->{$name}->{foreign} = $foreign->{$name};
+        }
+    }
 }
 
 =head1 AUTHOR
