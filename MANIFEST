@@ -12,8 +12,6 @@ lib/Nitesi/Core/Types.pm
 lib/Nitesi/Core/Role/Account.pm
 lib/Nitesi/Inventory.pm
 lib/Nitesi/Navigation.pm
-lib/Nitesi/Object.pm
-lib/Nitesi/Object/Singleton.pm
 lib/Nitesi/Product.pm
 lib/Nitesi/Provider/Role.pm
 lib/Nitesi/Transaction.pm

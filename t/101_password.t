@@ -11,7 +11,7 @@ use Nitesi::Account::Password;
 
 my ($crypt, $hash, $ret);
 
-$crypt = Nitesi::Account::Password->instance;
+$crypt = Nitesi::Account::Password->new;
 
 $hash = $crypt->password('nevairbe');
 

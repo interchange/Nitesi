@@ -6,7 +6,7 @@ use warnings;
 use Crypt::Password 0.23 ();
 use Data::SimplePassword;
 
-use base 'Nitesi::Object::Singleton';
+use Moo;
 
 =head1 NAME
 

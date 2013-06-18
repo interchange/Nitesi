@@ -5,7 +5,8 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 12;
+
 use Nitesi::Account::Manager;
 
 my ($account, $ret, $start_time);
@@ -13,6 +14,7 @@ my ($account, $ret, $start_time);
 # without account providers
 $account = Nitesi::Account::Manager->new;
 isa_ok($account, 'Nitesi::Account::Manager');
+isa_ok($account->password_manager, 'Nitesi::Account::Password');
 $ret = $account->login(username => 'racke', password => 'nevairbe');
 ok ($ret == 0);
 
@@ -21,7 +23,9 @@ $start_time = time;
 # with sample account provider
 $account = Nitesi::Account::Manager->new(provider_sub => \&providers);
 isa_ok($account, 'Nitesi::Account::Manager');
+isa_ok($account->password_manager, 'Nitesi::Account::Password');
 $ret = $account->login(username => 'racke', password => 'nevairbe');
+
 ok ($ret == 1);
 $ret = $account->last_login;
 ok ($ret == 0, "Test initial last login value.")
@@ -36,7 +40,8 @@ is_deeply([keys %$pref], ['test']);
 # test last login
 $account->logout;
 $ret = $account->login(username => 'racke', password => 'nevairbe');
-ok ($ret == 1);
+ok ($ret == 1)
+    || diag "Login failed with $ret.";
 $ret = $account->last_login;
 
 ok ($ret >= $start_time, "Test last login value.")

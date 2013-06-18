@@ -3,7 +3,7 @@ package Nitesi::Account::Manager;
 use strict;
 use warnings;
 
-use base 'Nitesi::Object';
+use Moo;
 
 use Nitesi::Class;
 use Nitesi::Account::Password;
@@ -15,7 +15,7 @@ Nitesi::Account::Manager - Account Manager for Nitesi Shop Machine
 
 =head1 SYNOPSIS
 
-    $account = Nitesi::Account::Manager->instance(provider_sub => \&account_providers, 
+    $account = Nitesi::Account::Manager->new(provider_sub => \&account_providers, 
                                                session_sub => \&session);
 
     $account->init_from_session;
@@ -49,37 +49,50 @@ Initializer called by instance class method.
 
 =cut
 
-sub init {
-    my ($self, %args) = @_;
+has password_manager => (
+    is => 'rw',
+    lazy => 1,
+    default => sub {Nitesi::Account::Password->new;},
+);
+
+has providers => (
+    is => 'ro',
+);
+
+has session_sub => (
+    is => 'rw',
+    lazy => 1,
+    default => sub {sub {return 1;}},
+);
+
+sub BUILDARGS {
+    my ($class, %args) = @_;
     my ($ret, @list, $init);
 
-    $self->{password} = Nitesi::Account::Password->instance;
-    $self->{providers} = [];
+    $args{providers} = [];
     
     if ($args{provider_sub}) {
-	# retrieve list of providers
-	$ret = $args{provider_sub}->();
+        # retrieve list of providers
+        $ret = $args{provider_sub}->();
 	
-	if (ref($ret) eq 'HASH') {
-	    # just one provider
-	    @list = ($ret);
-	}
-	elsif (ref($ret) eq 'ARRAY') {
-	    @list = @$ret;
-	}
+        if (ref($ret) eq 'HASH') {
+            # just one provider
+            @list = ($ret);
+        }
+        elsif (ref($ret) eq 'ARRAY') {
+            @list = @$ret;
+        }
 
-	# instantiate provider objects
-	for $init (@list) {
-	    push @{$self->{providers}}, Nitesi::Class->instantiate(@$init, crypt => $self->{password});
-	}
+        # instantiate provider objects
+        for $init (@list) {
+            push @$init, 'crypt', Nitesi::Account::Password->new;
+            push @{$args{providers}}, Nitesi::Class->instantiate(@$init);
+        }
+
+        delete $args{provider_sub};
     }
 
-    if ($args{session_sub}) {
-        $self->{session_sub} = $args{session_sub};
-    }
-    else {
-        $self->{session_sub} = sub {return 1;};
-    }
+    return \%args;
 }
 
 =head2 init_from_session
@@ -127,7 +140,7 @@ sub login {
     for my $p (@{$self->{providers}}) {
         if ($acct = $p->login(%args)) {
             $acct->{provider_id} = $id;
-            $self->{session_sub}->('init', $acct);
+            $self->session_sub->('init', $acct);
             $self->{account} = $acct;
             $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
             $success = 1;
@@ -165,7 +178,7 @@ sub logout {
         $self->{acl} = ACL::Lite->new;
     }
 
-    $self->{session_sub}->('destroy');
+    $self->session_sub->('destroy');
 }
 
 =head2 create
@@ -205,7 +218,7 @@ sub create {
 
     # password is added after account creation
     unless ($password = delete $args{password}) {
-        $password = $self->{password}->make_password;
+        $password = $self->password_manager->make_password;
     }
 
     for my $p (@{$self->{providers}}) {
@@ -366,7 +379,7 @@ sub status {
 
     if (@args > 1) {
 	# update status information
-	$self->{account} = $self->{session_sub}->('update', {@args});
+	$self->{account} = $self->session_sub->('update', {@args});
     }
     elsif (@args == 1) {
         if (exists $self->{account}->{$args[0]}) {
@@ -457,7 +470,7 @@ sub password {
 	}
     }
 
-    $provider->password($self->{password}->password($args{password}),
+    $provider->password($self->password_manager->password($args{password}),
 			$args{username});
 }
 
@@ -521,7 +534,7 @@ sub value {
 	}
 
 	$provider->value($username, $name, $value);
-	$self->{account} = $self->{session_sub}->('update', {$name => $value});
+	$self->{account} = $self->session_sub->('update', {$name => $value});
 
 	return $value;
     }
@@ -566,7 +579,7 @@ sub become {
         if ($p->can('become')) {
             if ($acct = $p->become($username)) {
                 $acct->{provider_id} = $id;
-                $self->{session_sub}->('init', $acct);
+                $self->session_sub->('init', $acct);
                 $self->{account} = $acct;
                 $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
                 return 1;
