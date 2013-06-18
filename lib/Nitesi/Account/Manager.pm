@@ -531,6 +531,19 @@ sub value {
     }
 }
 
+=head2 last_login
+
+Returns time of last login (before the current one) in seconds
+since epoch or undef if provider doesn't supply this information.
+
+=cut
+
+sub last_login {
+    my ($self) = @_;
+
+    return $self->{account}->{last_login};
+}
+
 =head2 become
 
 Become any user you want:
