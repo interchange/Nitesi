@@ -1,5 +1,12 @@
 Revision history for Nitesi
 
+0.0090 Wed Jun 19 19:51:37 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Replace Nitesi::Object and Nitesi::Object::Singleton with Moo.
+    * Add last_login method to account manager.
+
 0.0080 Sun May 26 10:30:47 2013 CEST
 
     [ENHANCEMENTS]
