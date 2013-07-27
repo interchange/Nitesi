@@ -90,6 +90,8 @@ sub init {
     return 1;
 };
 
+=head1 METHODS
+
 =head2 items
 
 Returns items in the cart.
