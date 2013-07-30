@@ -1,5 +1,15 @@
 Revision history for Nitesi
 
+0.0091 Tue Jul 30 11:03:23 2013 CEST
+
+    [BUG FIXES]
+
+    * Avoid crash when trying to logout an anonymous user (Marco Pessotto)
+
+    [DOCUMENTATION]
+
+    * Add methods header to Nitesi::Cart's POD.
+
 0.0090 Wed Jun 19 19:51:37 2013 CEST
 
     [ENHANCEMENTS]

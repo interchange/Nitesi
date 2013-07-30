@@ -2,7 +2,7 @@ NAME
     Nitesi - Open Source Shop Machine
 
 VERSION
-    0.0090
+    0.0091
 
 DESCRIPTION
     Nitesi, the Open Source Shop Machine, is the Modern Perl ecosystem for
@@ -64,6 +64,8 @@ SUPPORT
         http://search.cpan.org/dist/Nitesi/
 
 ACKNOWLEDGEMENTS
+    Marco Pessotto (patch fixing crash in logout)
+
 LICENSE AND COPYRIGHT
     Copyright 2011-2013 Stefan Hornburg (Racke).
 
