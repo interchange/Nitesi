@@ -167,7 +167,9 @@ sub logout {
     my ($self, %args) = @_;
     my ($provider);
 
-    if ($self->{account}) {
+    # log out if the user is authenticated, so skip it if uid is 0 (as
+    # per doc of uid).
+    if ($self->uid) {
         $provider = $self->{providers}->[$self->{account}->{provider_id}];
 
         if ($provider->can('logout')) {
@@ -279,7 +281,7 @@ B<Example:>
 sub uid {
     my $self = shift;
 
-    return $self->{account}->{uid};
+    return $self->{account}->{uid} || 0;
 }
 
 =head2 username

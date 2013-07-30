@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 15;
 
 use Nitesi::Account::Manager;
 
@@ -57,3 +57,14 @@ sub providers {
                                permissions => [qw/test/],
                                }}]];
 }
+
+diag "Testing unauthenticated";
+$account = Nitesi::Account::Manager->new(provider_sub => \&providers);
+$account->login(username => 'pippo', password => 'puppa');
+ok($account->uid == 0, "account uid is 0");
+ok(!$account->username, "account username returns false");
+eval {
+    $account->logout;
+};
+ok(!$@, "No crash on log out");
+
