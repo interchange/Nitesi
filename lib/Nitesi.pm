@@ -100,6 +100,7 @@ L<http://search.cpan.org/dist/Nitesi/>
 
 =head1 ACKNOWLEDGEMENTS
 
+Marco Pessotto (patch fixing crash in logout)
 
 =head1 LICENSE AND COPYRIGHT
 
