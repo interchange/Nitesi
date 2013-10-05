@@ -36,6 +36,18 @@ Navigation name.
 
 Navigation description.
 
+=item template
+
+Template used for this navigation entity.
+
+=item language
+
+Language of this navigation entity.
+
+=item alias
+
+Original navigation entity for language specific entities.
+
 =item priority
 
 The priority is used for sort navigation
@@ -76,6 +88,24 @@ has name => (
 
 has description => (
     is => 'rw',
+);
+
+has template => (
+    is => 'rw',
+    lazy => 1,
+    default => quote_sub q{return '';},
+);
+
+has language => (
+    is => 'rw',
+    lazy => 1,
+    default => quote_sub q{return '';},
+);
+
+has alias => (
+    is => 'rw',
+    lazy => 1,
+    default => quote_sub q{return 0;},
 );
 
 has parent => (
