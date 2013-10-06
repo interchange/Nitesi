@@ -1,5 +1,12 @@
 Revision history for Nitesi
 
+0.0092 Sun Oct  6 12:18:30 2013 EDT
+
+    [ENHANCEMENTS]
+
+    * Add Nitesi::Provider::Object module.
+    * Add template, language and alias accessors to Nitesi::Navigation.
+
 0.0091 Tue Jul 30 11:03:23 2013 CEST
 
     [BUG FIXES]
