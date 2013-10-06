@@ -55,6 +55,12 @@ has password_manager => (
     default => sub {Nitesi::Account::Password->new;},
 );
 
+=head2 providers
+
+List with account providers.
+
+=cut
+
 has providers => (
     is => 'ro',
 );
