@@ -100,6 +100,9 @@ sub _build_attribute_map {
         if (exists $self->api_info->{$role}->{inherit}) {
             $inherit =  $self->api_info->{$role}->{inherit};
         }
+        elsif (exists $self->api_info->{$role}->{base}) {
+            $inherit = $self->api_info->{$role}->{base};
+        }
 
         $self->_lookup_attributes_from_moo($role, $role, \%map, $att_settings, $foreign, $virtual);
 
