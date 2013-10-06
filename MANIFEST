@@ -13,6 +13,7 @@ lib/Nitesi/Core/Role/Account.pm
 lib/Nitesi/Inventory.pm
 lib/Nitesi/Navigation.pm
 lib/Nitesi/Product.pm
+lib/Nitesi/Provider/Object.pm
 lib/Nitesi/Provider/Role.pm
 lib/Nitesi/Transaction.pm
 Makefile.PL
@@ -25,3 +26,4 @@ t/account-manager.t
 t/manifest.t
 t/pod.t
 t/pod-coverage.t
+t/provider.t
