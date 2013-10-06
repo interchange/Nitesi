@@ -116,7 +116,6 @@ has api_attributes => (
     is => 'rw',
 );
 
-
 =head2 api_info
 
 API information for product class.

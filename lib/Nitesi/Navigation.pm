@@ -139,6 +139,16 @@ has uri => (
 
 =head1 METHODS
 
+=head2 api_attributes
+
+API attributes for navigation class.
+
+=cut
+
+has api_attributes => (
+    is => 'rw',
+);
+
 =head2 api_info
 
 API information for navigation class.
@@ -146,8 +156,12 @@ API information for navigation class.
 =cut
 
 sub api_info {
-    return {table => 'navigation',
+    my $self = shift;
+
+    return {base => __PACKAGE__,
+            table => 'navigation',
             key => 'code',
+            attributes => $self->api_attributes,
             assign => {'Nitesi::Product' => {
                 table => 'navigation_products',
                 key => [qw/sku navigation/]}

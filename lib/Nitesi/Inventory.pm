@@ -43,9 +43,11 @@ API information for inventory class.
 =cut
 
 sub inventory_api_info {
+    my $self = shift;
+
     return {table => 'inventory',
-	    key => 'sku',
-	    sparse => 1,
+            key => 'sku',
+            sparse => 1,
     };
 }
 

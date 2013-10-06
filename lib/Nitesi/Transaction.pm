@@ -211,6 +211,16 @@ has aid_billing => (
 
 =head1 METHODS
 
+=head2 api_attributes
+
+API attributes for transaction class.
+
+=cut
+
+has api_attributes => (
+    is => 'rw',
+);
+
 =head2 api_info
 
 Returns API information for transaction object.
@@ -218,8 +228,12 @@ Returns API information for transaction object.
 =cut
 
 sub api_info {
-    return {table => 'transactions',
+    my $self = shift;
+
+    return {base => '__PACKAGE__',
+            table => 'transactions',
             key => 'code',
+            attributes => $self->api_attributes,
     };
 };
 

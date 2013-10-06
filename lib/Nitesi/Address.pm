@@ -159,6 +159,16 @@ has modified => (
 
 =head1 METHODS
 
+=head2 api_attributes
+
+API attributes for address class.
+
+=cut
+
+has api_attributes => (
+    is => 'rw',
+);
+
 =head2 api_info
 
 Returns API information for adress object.
@@ -166,7 +176,11 @@ Returns API information for adress object.
 =cut
 
 sub api_info {
-    return {table => 'addresses',
+    my $self = shift;
+
+    return {base => __PACKAGE__,
+            table => 'addresses',
+            attributes => $self->api_attributes,
             key => 'aid',
     };
 };
