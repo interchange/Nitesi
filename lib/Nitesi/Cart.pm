@@ -51,10 +51,12 @@ sub new {
     $class = shift;
     %args = @_;
 
+    my $time = time;
+
     $self = {error => '', items => [], modifiers => [],
-	     costs => [], subtotal => 0, total => 0, 
-	     cache_subtotal => 1, cache_total => 1,
-             created => 0, last_modified => 0,
+             costs => [], subtotal => 0, total => 0,
+             cache_subtotal => 1, cache_total => 1,
+             created => $time, last_modified => $time,
     };
 
     if ($args{name}) {
@@ -62,6 +64,12 @@ sub new {
     }
     else {
 	$self->{name} = CART_DEFAULT;
+    }
+
+    for my $ts (qw/created last_modified/) {
+        if (exists $args{$ts}) {
+            $self->{$ts} = $args{$ts};
+        }
     }
 
     if ($args{modifiers}) {

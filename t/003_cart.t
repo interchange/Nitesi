@@ -5,11 +5,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 38;
+use Test::More tests => 40;
 
 use Nitesi::Cart;
 
-my ($cart, $item, $name, $ret);
+my ($cart, $item, $name, $ret, $time);
 
 # Get / set cart name
 $cart = Nitesi::Cart->new();
@@ -20,23 +20,33 @@ ok($name eq 'main', $name);
 $name = $cart->name('discount');
 ok($name eq 'discount');
 
+# Values for created / modified
+$ret = $cart->created;
+ok($ret > 0);
+
+$ret = $cart->last_modified;
+ok($ret > 0);
+
 # Items
-$cart = Nitesi::Cart->new();
+$cart = Nitesi::Cart->new(last_modified => 0);
 
 $item = {};
 $ret = $cart->add($item);
 ok(! defined($ret));
-ok(! $cart->last_modified);
+ok(! $cart->last_modified)
+    || diag "Last modified: " . $cart->last_modified;
 
 $item->{sku} = 'ABC';
 $ret = $cart->add($item);
 ok(! defined($ret));
-ok(! $cart->last_modified);
+ok(! $cart->last_modified)
+    || diag "Last modified: " . $cart->last_modified;
 
 $item->{name} = 'Foobar';
 $ret = $cart->add($item);
 ok(! defined($ret));
-ok(! $cart->last_modified);
+ok(! $cart->last_modified)
+    || diag "Last modified: " . $cart->last_modified;
 
 $item->{price} = '42';
 $ret = $cart->add($item);
