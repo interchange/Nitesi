@@ -1,5 +1,12 @@
 Revision history for Nitesi
 
+0.0093 Tue Nov 19 09:50:59 2013 CET
+
+    [ENHANCEMENTS]
+
+    * Initialize created and last_modified values on instantiation of
+      Nitesi::Cart.
+
 0.0092 Sun Oct  6 12:18:30 2013 EDT
 
     [ENHANCEMENTS]
