@@ -232,7 +232,11 @@ sub create {
 
     for my $p (@{$self->{providers}}) {
         next unless $p->can('create');
-	
+
+        if ($p->exists($args{username})) {
+            die "Account already exists: ", $args{username};
+        }
+
         if ($uid = $p->create(%args)) {
             $self->password(username => $args{username},
                             password => $password);
