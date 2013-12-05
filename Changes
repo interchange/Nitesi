@@ -1,5 +1,15 @@
 Revision history for Nitesi
 
+0.0094 Thu Dec  5 09:57:14 2013 CET
+
+    [ENHANCEMENTS]
+
+    * Adjust account manager to new default permissions of ACL::Lite 0.0003.
+
+    [BUG FIXES]
+
+    * Add check whether account exists before creating it.
+
 0.0093 Tue Nov 19 09:50:59 2013 CET
 
     [ENHANCEMENTS]
