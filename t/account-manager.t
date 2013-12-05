@@ -5,8 +5,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 16;
 
+use Data::Dumper;
 use Nitesi::Account::Manager;
 
 my ($account, $ret, $start_time);
@@ -34,8 +35,10 @@ ok ($ret == 0, "Test initial last login value.")
 
 my @parr = $account->permissions;
 my $pref = $account->permissions;
-is_deeply([@parr], ['test']);
-is_deeply([keys %$pref], ['test']);
+is_deeply([sort @parr], ['authenticated', 'test'])
+    || diag "Returned array from permissions method: ", Dumper(\@parr);
+is_deeply([sort keys %$pref], ['authenticated', 'test'])
+    || diag "Returned hash from permissions method: ", Dumper($pref);
 
 # test last login
 $account->logout;
@@ -47,6 +50,11 @@ $ret = $account->last_login;
 ok ($ret >= $start_time, "Test last login value.")
     || diag "Last login $ret is older than $start_time.";
 
+# test permission for authenticated user
+@parr = $account->permissions;
+is_deeply([sort @parr], ['authenticated', 'test'])
+    || diag "Returned array from permissions method: ", Dumper(\@parr);
+
 # with bogus password
 $ret = $account->login(username => 'racke', password => 'neviarbe');
 ok ($ret == 0);
@@ -54,7 +62,8 @@ ok ($ret == 0);
 sub providers {
     return [['Nitesi::Account::Provider::Test',
             users => {racke => {password => 'nevairbe',
-                               permissions => [qw/test/],
+                                uid => 666,
+                                permissions => [qw/test/],
                                }}]];
 }
 

@@ -41,7 +41,8 @@ sub login {
 
         $users->{$username}->{last_login} = time;
 
-        return {username => $args{username},
+        return {uid => $users->{$username}->{uid},
+                username => $args{username},
                 permissions => $users->{$args{username}}->{permissions},
                 last_login => $last_login,
                };

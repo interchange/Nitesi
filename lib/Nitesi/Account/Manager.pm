@@ -110,8 +110,8 @@ Reads user information through session routine.
 sub init_from_session {
     my $self = shift;
 
-    $self->{account} = $self->{session_sub}->() 
-	|| {uid => 0, username => '', roles => [], permissions => ['anonymous']};
+    $self->{account} = $self->{session_sub}->()
+        || {uid => 0, username => '', roles => []};
 
     $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
 
@@ -148,7 +148,8 @@ sub login {
             $acct->{provider_id} = $id;
             $self->session_sub->('init', $acct);
             $self->{account} = $acct;
-            $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
+            $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions},
+                                          uid => $acct->{uid});
             $success = 1;
             last;
         }
@@ -589,7 +590,8 @@ sub become {
                 $acct->{provider_id} = $id;
                 $self->session_sub->('init', $acct);
                 $self->{account} = $acct;
-                $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions});
+                $self->{acl} = ACL::Lite->new(permissions => $self->{account}->{permissions},
+                                              uid => $acct->{uid});
                 return 1;
             }
         }
