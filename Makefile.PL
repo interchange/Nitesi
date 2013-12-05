@@ -23,7 +23,8 @@ WriteMakefile(
     clean               => { FILES => 'Nitesi-*' },
     META_MERGE        => {
         resources => {
-            repository  => 'https://github.com/racke/Nitesi',
+            repository  => 'https://github.com/interchange/Nitesi',
+            bugtracker => 'https://github.com/interchange/Nitesi/issues',
         },
     },
 );
