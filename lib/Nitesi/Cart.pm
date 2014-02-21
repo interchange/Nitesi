@@ -237,6 +237,16 @@ sub add {
 	$item{quantity} = 1;
     }
 
+    if (exists $item{priority} && defined $item{priority}) {
+        unless ($item{priority} =~ /^\d+$/) {
+            $self->{error} = "Item $item{sku} added with invalid priority.";
+            return;
+        }
+    }
+    else {
+        $item{priority} = 0;
+    }
+
     unless (exists $item{price} && defined $item{price}
 	    && $item{price} =~ /^(\d+)(\.\d+)?$/ && $item{price} > 0) {
 	$self->{error} = "Item $item{sku} added with invalid price.";
